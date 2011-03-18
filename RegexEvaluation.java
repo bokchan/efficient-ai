@@ -61,6 +61,7 @@ public class RegexEvaluation {
     }
 
     private void loadRegularExpressions(String filename) {
+    	GameHelper.Trace("Loading regex patterns");
     	String dir = System.getProperty("user.dir") + System.getProperty("file.separator") + "trunk" +System.getProperty("file.separator") + "xml" + System.getProperty("file.separator");
     	System.out.println(dir);
         File file = new File("C:\\Users\\Andreas\\workspace\\Efficient AI\\trunk\\xml\\" + filename);
