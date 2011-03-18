@@ -274,7 +274,7 @@ public class GameHeuristics {
 
 	public void updateCurrentState(int move, int player) {
 		GameHelper.Trace("Move: " + move + "Player: " + player );
-		current = current.createGamestate(move-1, player); 
+		current = current.createGamestate(move, player); 
 	}
 
 	private void updateCurrentState(GameState state){
@@ -322,8 +322,8 @@ public class GameHeuristics {
 		byte[][] newState =  GameHelper.copyArray(current.state);
 
 		for (int row = newState.length-1; row >=0; row--) {
-			if (newState[row][move-1] == 0)
-			{newState[row][move-1] = (byte)playerid;
+			if (newState[row][move] == 0)
+			{newState[row][move] = (byte)playerid;
 			break;
 
 			}
@@ -341,9 +341,7 @@ public class GameHeuristics {
 			return g.utilityPlayer1 < -6 && g.utilityPlayer2 < 8;  
 		} else {
 			return g.utilityPlayer1 < -6 && g.utilityPlayer1 > -6;
-		}
-		
-		
+		}	
 	}
 	
 	public IGameLogic.Winner getWinner() {
@@ -364,7 +362,5 @@ public class GameHeuristics {
 		}
 		
 		return IGameLogic.Winner.NOT_FINISHED;
-	}
-	
-	
+	}	
 }

@@ -37,8 +37,11 @@ public class MainLogicNew implements IGameLogic {
     }
 
     public int decideNextMove() {
+    	GameHelper.Trace("Deciding move");
+    	long t1 = System.nanoTime();
     	int move = heuristics.evaluateGameState(); 
     	GameHelper.Trace("Move: "  + move);
+    	GameHelper.Trace("Time: "  + (System.nanoTime()-t1)/100000);
     	return move; 
     }
 
