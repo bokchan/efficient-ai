@@ -24,7 +24,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 
-public class Regextester {
+public class RegexTester {
 
 	/**
 	 * @param args
