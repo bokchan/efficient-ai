@@ -16,6 +16,7 @@ public class HashedByteArray {
 	static int rows = 0;
 	private TreeMap<Double, Integer> priority;
 	private Hashtable<Integer, Node> frontier;
+	
 	class Node{
 		int[] state;
 		double priority = 0.0;
