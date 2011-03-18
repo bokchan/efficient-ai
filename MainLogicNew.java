@@ -15,6 +15,7 @@ public class MainLogicNew implements IGameLogic {
     private int playerID;
     private int opponent;
     
+    
     private GameHeuristics heuristics;
     
     public void initializeGame(int columns, int rows, int playerID) {
@@ -27,18 +28,18 @@ public class MainLogicNew implements IGameLogic {
     }
 
     public void insertCoin(int column, int playerID) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    	heuristics.setCurrentState(column, playerID);
     }
 
     public int decideNextMove() {
-        // TODO: Call heuristics 
-        throw new UnsupportedOperationException("Not supported yet.");
+    	
+    	return heuristics.evaluateGameState();
+        
+        
     }
 
     public Winner gameFinished() {
-        // change toString to parser
-        // TODO: CALL heurictics 
-        throw new UnsupportedOperationException("Not supported yet.");
+    	return heuristics.getWinner();
     }
 
     public int getOpponentPlayerID(){

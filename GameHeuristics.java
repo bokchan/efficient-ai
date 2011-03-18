@@ -51,21 +51,21 @@ import java.util.Queue;
  *
  */
 public class GameHeuristics {
-	
-	private int cols = 0;
-    private int rows = 0;
-    private int playerID;
-    private int opponent;
-	
-	public Map<Integer, GameState> explored;
-	public Queue<GameState> frontier;
-	private int cutOff = 6;
-    
-    private RegexEvaluation threeInARow = new RegexEvaluation("3inarow.xml", RegexEvaluation.MATCH_TYPE.KILLER_MOVE);
-    private RegexEvaluation killermoves = new RegexEvaluation("killermoves.xml", RegexEvaluation.MATCH_TYPE.THREE_IN_A_ROW);
-    private RegexEvaluation fourInARow = new RegexEvaluation("winnermoves.xml",RegexEvaluation.MATCH_TYPE.FOUR_IN_A_ROW);
 
-    private GameState current;
+	private int cols = 0;
+	private int rows = 0;
+	private int playerID;
+	private int opponent;
+
+	private Map<Integer, GameState> explored;
+	private  Queue<GameState> frontier;
+	private int cutOff = 6;
+
+	private RegexEvaluation threeInARow = new RegexEvaluation("3inarow.xml", RegexEvaluation.MATCH_TYPE.KILLER_MOVE);
+	private RegexEvaluation killermoves = new RegexEvaluation("killermoves.xml", RegexEvaluation.MATCH_TYPE.THREE_IN_A_ROW);
+	private RegexEvaluation fourInARow = new RegexEvaluation("winnermoves.xml",RegexEvaluation.MATCH_TYPE.FOUR_IN_A_ROW);
+
+	private GameState current;
 
 	public GameHeuristics(int cols, int rows, int playerid) {
 		this.cols = cols;
@@ -84,7 +84,35 @@ public class GameHeuristics {
 	 * @param gamestate
 	 * @return
 	 */
-	public void exploreBoardGameState(int player) 
+	private void exploreBoardGameState() 
+	{
+		// Get the head of the queue
+		// Check if the depth is ok, keep dequeueing or what 
+		GameState gamestate = frontier.poll();
+		if (gamestate != null && (gamestate.depth - current.depth) < cutOff) 
+		{
+			for (Integer childHash : gamestate.children) {
+				GameState child = explored.get(childHash); 
+				if (!MinMax(child)) { addGameStateToFrontier(child); } else {
+					updateCurrentState(child); 
+				} 
+			}
+		} else {
+			return;
+		}
+		// call exploregamestate again, going depth first;
+		exploreBoardGameState();
+	}
+
+
+	/***
+	 * Function that receives an explored board state isOpponent
+	 * Search till all leaves within the cutoff have been explored or a goal state has been reached
+	 *   
+	 * @param gamestate
+	 * @return
+	 */
+	private void exploreBoardGameState(int player) 
 	{
 		// Get the head of the queue
 		// Check if the depth is ok, keep dequeueing or what 
@@ -100,7 +128,7 @@ public class GameHeuristics {
 					// If we encounter an empty field, explore it
 					if (gamestate.state[row][col] == 0) {
 
-						GameState newGS  = gamestate.createGamestate(col, row, player);
+						GameState newGS  = gamestate.createGamestate(col, player);
 						// Assign utility
 						assignUtility(newGS);
 
@@ -109,7 +137,6 @@ public class GameHeuristics {
 						// If utility is acceptable add as child and add to gamestate
 						gamestate.addToChildren(newGS);
 						addGameStateToFrontier(newGS);
-
 						row=-1; 						//Break the loop 
 					}
 				}
@@ -129,24 +156,35 @@ public class GameHeuristics {
 	 * 
 	 * @param state
 	 */
-	public void assignUtility(GameState state) {
+	private void assignUtility(GameState state) {
 		// Get state as string
 		String strState = state.stateAsString();
-		
+
 		RegexResult result = fourInARow.match(strState, state.turn);
 		if (result != null) {
-			state.utilityMIN = -8;
+			if (result.resultstate.equals( RegexEvaluation.MATCH_RESULT_STATE.PLAYER1WON)) {
+				state.utilityPlayer1 = -8;
+				state.utilityPlayer1 = 0;
+			} else {
+				state.utilityPlayer1 = 0;
+				state.utilityPlayer1 = 8;
+			}
 			return;
 		}
-		
+
 		/***
 		 * Check if opponent has any three in row
 		 * If this is the case, return the row that that blocks the opponent   
 		 */
 		result = threeInARow.match(strState, state.turn);
 		if (result != null) {
-			state.utilityMIN = result != null ? 0 : -4;
-			state.utilityMAX = result != null ? 8 : 4;
+			if (result.resultstate.equals(RegexEvaluation.MATCH_RESULT_STATE.PLAYER1THREEINAROW)) {
+				state.utilityPlayer1 = -8;
+				state.utilityPlayer2 = 0;
+			} else {
+				state.utilityPlayer1 = 0;
+				state.utilityPlayer2 = 8;
+			}
 		} 
 
 		/***
@@ -154,82 +192,74 @@ public class GameHeuristics {
 		 */
 		result = killermoves.match(strState, state.turn);
 		if (result != null){
-			state.utilityMAX = 02;
-			state.utilityMIN = 123;
+			if (result.resultstate.equals(RegexEvaluation.MATCH_RESULT_STATE.PLAYER1KILLERMOVE)) {
+			state.utilityPlayer2 = -8;
+			state.utilityPlayer1 = 4;
+			} else {
+				state.utilityPlayer2 = -4;
+				state.utilityPlayer1 = 8;
+			}
 		}
 	}
 
 	/***
-	 * Evaluates the gamestate. Is called from Player. 
+	 * 
+	 * Evaluates the gamestate. Only public access. Is called from GameLogic. 
 	 * @param state
 	 */
 
-	public int evaluateGameState(int[][] state, int player) 
+	public int evaluateGameState() 
 	{
 		// Clear all objects from the frontier; 
 		frontier.clear();
+
 		// Set the current gamestate
-		setCurrentState(GameHelper.toByteMatrix(state));
-		frontier.add(current);
+		//setCurrentState(move, player);
+		// Add to frontier
+
 		// Get state as string
-
 		String strState = current.stateAsString();
-
-		// Test if game is finished
-		RegexResult  result= fourInARow.match(strState, player);
-		if (result !=null) {
-			return -player;
-		}
-
-		// Evaluate cols
-		result  = fourInARow.match(strState, opponent);
-		if (result != null) {
-			return -opponent;
-		}
-
+		
 		/***
 		 * Check if opponent has any three in row
 		 * If this is the case, return the row that that blocks the opponent   
 		 */
-		result = threeInARow.match(strState, playerID);
+		RegexResult result = threeInARow.match(strState, getOpponentPlayerID());
 		if (result != null) {
-			return getMove(result); 
-			// TODO: doSomeThing 
+			setMove(result);
+			return current.action;
 		}
-		result = threeInARow.match(strState, getOpponentPlayerID());
+		/***
+		 * Check if we have three in a row
+		 */
+		result = threeInARow.match(strState, playerID);
 		if(result != null ) {
 			// Return blocking move
-			return getMove(result);
+			setMove(result);
+			return current.action;
 		} else {
 			// Else we start exploring the state space
-			exploreBoardGameState(opponent);
-		}
-		
+
+			addGameStateToFrontier(current);
+			if (exploredContains(current)) {
+				exploreBoardGameState();
+			} else { 
+				exploreBoardGameState(playerID);
+			} 
+		}		
 		//return (next !=null) ? next.action: Integer.MIN_VALUE;
 		// TODO: How do we get the best move from a search
-		return getMove(result);
-
-	}
-	
-	/***
-	 * TODO: should do it through state.createGame
-	 * Add a gamestate to frontier, should do it through state.createGame 
-	 * @param state
-	 * @param playerid
-	 */
-	public void addGameStateToFrontier(int[][] state, int playerid) {
-		GameState g = new GameState( GameHelper.toByteMatrix(state));
-		g.turn = playerid;
+		return current.action;
 	}
 
 	/****
 	 * Adds gamestate to frontier
 	 * @param state
 	 */
-	public void addGameStateToFrontier(GameState state) {
+	private void addGameStateToFrontier(GameState state) {
 		frontier.add(state);
 	}
-	
+
 	public Queue<GameState> getFrontier() {
 		return frontier;
 	}
@@ -238,38 +268,33 @@ public class GameHeuristics {
 		return explored;
 	}
 
-	public void setCurrentState(byte[][] state) {
-		if (explored.containsKey(Arrays.deepHashCode(state))) {
-			current = explored.get(Arrays.deepHashCode(state));
+	public void setCurrentState(int move, int player) {
+
+		if ((current = explored.get(Arrays.deepHashCode(getNewState(move, player)))) == null) {
+			current = current.createGamestate(move-1, player);
 		} else {
 			// This is the start of the game or the opponent has made a move not anticipated by us
-			current = new GameState(state); 
 		}
 	}
-	
-	public void updateCurrentState(GameState state) {
+
+	private void updateCurrentState(GameState state){
 		// Implicitly updates gamestate by asignning and evaluting at the same time  
 		if ((current = explored.get(state.hashCode)) ==  null) {
 			current = state; 
 		} 
 	}
-	
-	public String asString(GameState state) {
-		return state.stateAsString();
-	}
 
-	private int getMove(RegexResult result) {
-	
-		int row =  result.matchStartIdx/cols + result.offsetY;
+	private void setMove(RegexResult result) {
+		//int row =  result.matchStartIdx/cols + result.offsetY;
 		int col = result.matchStartIdx % cols + result.offsetX;
-		
+
 		// Creates a new gamestate based on the current state
 		// Updates the currentstate 
-		updateCurrentState(current.createGamestate(col, row, result.playerid));
+		updateCurrentState(current.createGamestate(col, result.playerid));
 		// return 1 based column index 
-		return col + 1;
+		//return col + 1;
 	}
-	public void addGameStateToExplored(GameState state) {
+	private void addGameStateToExplored(GameState state) {
 		// Use the hashcode of the bytearray not the int array
 		explored.put(state.hashCode, state);
 	}
@@ -279,16 +304,65 @@ public class GameHeuristics {
 	 * @param state
 	 * @return
 	 */
-	public GameState exploredContains(int[][] state) {
-		return explored.get(Arrays.deepHashCode((GameHelper.toByteMatrix(state))));
+	private boolean exploredContains(GameState state) {
+		return explored.containsKey(state.hashCode);
+	}
+
+	private int getOpponentPlayerID(){
+		if (playerID == 1){
+			opponent = 2;
+			return 2;
+		} else {
+			opponent = 1;
+		}
+		return opponent;
+	}
+
+	private byte[][] getNewState(int move, int playerid) {
+		byte[][] newState =  GameHelper.copyArray(current.state);
+
+		for (int row = newState.length; row >=0; row--) {
+			if (newState[row][move-1] == 0)
+			{newState[row][move-1] = (byte)playerid;
+			break;
+
+			}
+		}
+		return newState;
+	}
+
+	/***
+	 * Evaluates utility based on a state 
+	 * @param g GameState 
+	 * @return
+	 */
+	private boolean MinMax(GameState g) {
+		if (playerID == 1) {
+			return g.utilityPlayer1 < -6 && g.utilityPlayer2 < 8;  
+		} else {
+			return g.utilityPlayer1 < -6 && g.utilityPlayer1 > -6;
+		}
+		
+		
 	}
 	
-	public int getOpponentPlayerID(){
-        if (playerID == 1){
-            return 2;
-        }
-        return 1;
-    }
-	
+	public IGameLogic.Winner getWinner() {
+		// Get state as string
+		String strState = current.stateAsString();
+		
+		
+		//Have we won
+		RegexResult   result  = fourInARow.match(strState, playerID);
+		if (result != null) {
+			return IGameLogic.Winner.PLAYER1;
+		} 
 
+		// 	Has opponent won 
+		result= fourInARow.match(strState, current.turn);
+		if (result !=null) {
+			return IGameLogic.Winner.PLAYER2;
+		}
+		
+		return IGameLogic.Winner.NOT_FINISHED;
+	}
 }
