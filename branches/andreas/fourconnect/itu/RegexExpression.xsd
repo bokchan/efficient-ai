@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" >
+<element name="expressions">
+	<complexType>
+		<sequence>
+			<element name="expression" maxOccurs="unbounded" >
+				<complexType>
+					<sequence>
+						<element default="" name="description" type="string"></element>
+						<element default="" name="pattern" type="string"></element>
+						<element default="0" name="offsetY" type="int"></element>
+						<element default="0" name="offsetX" type="int"></element>
+						<element default="0" name="modMin" type="int"></element>
+						<element default="6" name="modMax" type="int"></element>
+					</sequence>
+					<attribute name="enabled" type="boolean" default="true"/>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+	</element>
+</schema>
