@@ -20,17 +20,19 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class RegexEvaluation {
-
+	public static enum MATCH_RESULT_STATE {PLAYER1WON, PLAYER2WON, PLAYER1THREEINAROW, PLAYER2THREEINAROW, PLAYER1KILLERMOVE, PLAYER2KILLERMOVE, TIE, NA};
+	public static enum MATCH_TYPE {FOUR_IN_A_ROW, THREE_IN_A_ROW, KILLER_MOVE};
     private List<RegexExpression> patterns;
     private Matcher matcher;
     int cols = 7;
+    private MATCH_TYPE matchtype;
 
     public enum Winner {
 
         PLAYER1, PLAYER2, TIE, NOT_FINISHED
     }
 
-    public RegexEvaluation(String xmlFileName) {
+    public RegexEvaluation(String xmlFileName, MATCH_TYPE type) {
         patterns = new ArrayList<RegexExpression>();
         loadRegularExpressions(xmlFileName);
     }
@@ -42,7 +44,7 @@ public class RegexEvaluation {
      * @param input
      * @return
      */
-    public int[] match(String input, int playerid) {
+    public RegexResult match(String input, int playerid) {
         for (RegexExpression r : patterns) {
             matcher = r.getPattern(playerid).matcher(input);
             while (matcher.find()) {
@@ -50,7 +52,9 @@ public class RegexEvaluation {
                  * However they can be evaluated based on mod
                  */
                 if (matcher.start() % cols >= r.getModMin() && matcher.start() % cols <= r.getModMax()) {
-                    return new int[]{matcher.start(), r.getyOffset(), r.getXOffset()};
+                	 
+                	return new RegexResult(matcher.start(), r.getyOffset(), r.getXOffset(),getMatchResultState(playerid), playerid);
+                    
                 }
             }
         }
@@ -71,7 +75,6 @@ public class RegexEvaluation {
             XPathFactory factory = XPathFactory.newInstance();
             XPath xpath = factory.newXPath();
             XPathExpression expr = xpath.compile("//expression");
-
             NodeList expressions = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
             for (int i = 0; i < ((NodeList) expressions).getLength(); i++) {
                 // Now we got a regex expressions
@@ -95,6 +98,24 @@ public class RegexEvaluation {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        
+        
+    }
+    
+    private MATCH_RESULT_STATE getMatchResultState(int playerid) {
+    	MATCH_RESULT_STATE state = MATCH_RESULT_STATE.NA;
+    	switch (matchtype) {
+    	case FOUR_IN_A_ROW:
+    		state = (playerid == 1) ? MATCH_RESULT_STATE.PLAYER1WON : MATCH_RESULT_STATE.PLAYER2WON;
+    		break;
+    	case THREE_IN_A_ROW : 
+    		state = (playerid == 1) ? MATCH_RESULT_STATE.PLAYER1THREEINAROW : MATCH_RESULT_STATE.PLAYER2THREEINAROW;
+    		break;
+    	case KILLER_MOVE : 
+    		state  = (playerid == 1) ? MATCH_RESULT_STATE.PLAYER1KILLERMOVE : MATCH_RESULT_STATE.PLAYER2KILLERMOVE;
+    		break;
+    	}
+    	return state;
     }
 
 }
