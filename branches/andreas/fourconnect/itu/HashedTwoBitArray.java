@@ -40,16 +40,20 @@ import java.util.regex.Pattern;
  * @author Andreas
  *
  */
-public class HashedByteMatrix2 {
+public class HashedTwoBitArray {
 	// Cols | Rows | DiagonalForward | DiagonalBackwards
 	// Make a three in a row
-	private final Pattern splitByte = Pattern.compile("[0-2]{2}");  
-	//"(player{1}[0-2]{6}){coins}|player{coins,}|(player{1}[0-2]{7}){coins,}|(player{1}[0-2]{5}){coins,}";
-	private final String regex = "(player{1}[0-2]{6}){coins}|player{coins,}|(player{1}[0-2]{7}){coins,}|(player{1}[0-2]{5}){coins,}";
-	private final String regexThreeInArrow = "(player{1}[0-2]{6}){coins}|player{coins,}|(player{1}[0-2]{7}){coins,}|(player{1}[0-2]{5}){coins,}";
+	
+	private final Pattern REGEX_HASWON_PLAYER1 = Pattern.compile("(1{1}[0-2]{6}){4}|1{4,}|(1{1}[0-2]{7}){4,}|(1{1}[0-2]{5}){4,}");
+	private final Pattern REGEX_HASWON_PLAYER2 = Pattern.compile("(2{1}[0-2]{6}){4}|2{4,}|(2{1}[0-2]{7}){4,}|(2{1}[0-2]{5}){4,}");
+
+	// Test for three in a row
+	// 1[0-2]{6}){3} = Column, 1{3,} Row,(1{1}[0-2]{7}){3,} = DiagonalBT, (1{1}[0-2]{5}){3,} = DiagonalTB     
+	private final Pattern REGEX_3_IN_A_ROW_PLAYER1 = Pattern.compile("(?:1[0-2]{6}){3}|1{3,}|1{1,}01{2}|1{2}01{1,}|(?:1[0-2]{7}){3,}|(?:1[0-2]{7}){2}0[0-2]{7}1|(?:1[0-2]{7}){1,}0[0-2]{7}1[0-2]{7}1|(?:1[0-2]{5}){3,}|(?:1[0-2]{5}){1,}0[0-2]{5}1[0-2]{5}1|(?:1[0-2]{5}){2}0[0-2]{5}(?:1[0-2]{5}){1,}");
+	private final Pattern REGEX_3_IN_A_ROW_PLAYER2 = Pattern.compile("(?:2[0-2]{6}){3}|2{3,}|2{1,}02{2}|2{2}02{1,}|(?:2[0-2]{7}){3,}|(?:2[0-2]{7}){2}0[0-2]{7}2|(?:2[0-2]{7}){1,}0[0-2]{7}2[0-2]{7}2|(?:2[0-2]{5}){3,}|(?:2[0-2]{5}){1,}0[0-2]{5}2[0-2]{5}2|(?:2[0-2]{5}){2}0[0-2]{5}(?:2[0-2]{5}){1,}");
 
 	//private final String killerMoves = "(1010.1110)|(1[0-2]{7}1[0-2]{5}1100[0-2]{5}00)|(1100..11100)|(10101..110101)|(1.0....1101.....0......01)|(0110..10110)|(0.....1011.111)|(1.......1.0...1110......0)|(1.011...1010.111000)|(1011..1101)|(11...0..1011.000)|(1......1....110)|(01.....011....011....0.1)|(0...1110....1.0...1..0)|(0110..10110)" ;
-	private final String killerMoves = "(player0player0.playerplayerplayer0)|(player[0-2]{7}player[0-2]{5}playerplayer00[0-2]{5}00)|(playerplayer00..playerplayerplayer00)|(player0player0player..playerplayer0player0player)|(player.0....playerplayer0player.....0......0player)|(0playerplayer0..player0playerplayer0)|(0.....player0playerplayer.playerplayerplayer)|(player.......player.0...playerplayerplayer0......0)|(player.0playerplayer...player0player0.playerplayerplayer000)|(player0playerplayer..playerplayer0player)|(playerplayer...0..player0playerplayer.000)|(player......player....playerplayer0)|(0player.....0playerplayer....0playerplayer....0.player)|(0...playerplayerplayer0....player.0...player..0)|(0playerplayer0..player0playerplayer0)";
+	private final Pattern REGEX_KILLERMOVES_PLAYER_1 = Pattern.compile("(1010.1110)|(1[0-2]{7}1[0-2]{5}1100[0-2]{5}00)|(1100..11100)|(10101..110101)|(1.0....1101.....0......01)|(0110..10110)|(0.....1011.111)|(1.......1.0...1110......0)|(1.011...1010.111000)|(1011..1101)|(11...0..1011.000)|(1......1....110)|(01.....011....011....0.1)|(0...1110....1.0...1..0)|(0110..10110)");
 	/***
 	 * 
 	 *  
@@ -81,7 +85,7 @@ public class HashedByteMatrix2 {
 		}
 	}
 
-	public HashedByteMatrix2(int cols, int rows, int playerid) {
+	public HashedTwoBitArray(int cols, int rows, int playerid) {
 		this.cols = cols;
 		this.rows = rows;
 		frontier = new HashMap<Integer, GameState>();
@@ -112,32 +116,32 @@ public class HashedByteMatrix2 {
 	 */
 
 	public void exploreBoardGameState(GameState state, int player, int depth) {
-//		int[][] matrix =toByteArray(state. 
-//		if ((depth - current.depth) < cutOff) {
-//			for (int col = 0; col < cols; col++) {
-//				for (int row = 0; row<rows; row++) {
-//					// Iterate through columns top to bottom
-//					// If we encounter an empty field, explore it
-//					if (state.state[col][row] == 0) {
-//						// Set the value to the value of the player
-//						byte[][] newState = state.state.clone(); 
-//						newState[col][row] = (byte)player;
-//						GameState g = new GameState(newState);
-//						g.parent = state.hashCode;
-//						g.action = col;
-//						assignUtility(g);
-//						// put gamestate on frontier
-//						// TODO: Implement the evaluation
-//						putGameStateOnFrontier(g);
-//						// Reset the board
-//						player = player == playerid ? opponent : playerid; 
-//						exploreBoardGameState(g, player, depth++);
-//					}
-//				}
-//			}
-//		} else {
-//			return;
-//		}
+		//		int[][] matrix =toByteArray(state. 
+		//		if ((depth - current.depth) < cutOff) {
+		//			for (int col = 0; col < cols; col++) {
+		//				for (int row = 0; row<rows; row++) {
+		//					// Iterate through columns top to bottom
+		//					// If we encounter an empty field, explore it
+		//					if (state.state[col][row] == 0) {
+		//						// Set the value to the value of the player
+		//						byte[][] newState = state.state.clone(); 
+		//						newState[col][row] = (byte)player;
+		//						GameState g = new GameState(newState);
+		//						g.parent = state.hashCode;
+		//						g.action = col;
+		//						assignUtility(g);
+		//						// put gamestate on frontier
+		//						// TODO: Implement the evaluation
+		//						putGameStateOnFrontier(g);
+		//						// Reset the board
+		//						player = player == playerid ? opponent : playerid; 
+		//						exploreBoardGameState(g, player, depth++);
+		//					}
+		//				}
+		//			}
+		//		} else {
+		//			return;
+		//		}
 	}
 
 	/***
@@ -150,10 +154,9 @@ public class HashedByteMatrix2 {
 		String strState = asString(state);
 
 		// Test if game can be won in one move
-		String r = regex; 		
-		Pattern goalPattern = Pattern.compile(r.replaceAll("player", String.valueOf(playerid)).replaceAll("coins", "4"));
 
-		Matcher m = goalPattern.matcher(strState);
+
+		Matcher m = REGEX_3_IN_A_ROW_PLAYER1.matcher(strState);
 		// Assumes player1 is max player  
 		if (m.find())  {
 			state.utilityMAX = 8.0;
@@ -166,9 +169,9 @@ public class HashedByteMatrix2 {
 		 * Check for killer moves that is where a coin creates two or more winning options  
 		 * 
 		 */
-		r = killerMoves;
-		Pattern p = Pattern.compile(r.replaceAll("player", String.valueOf(playerid)));   
-		m = p.matcher(strState);
+
+
+		m = REGEX_KILLERMOVES_PLAYER_1.matcher(strState);
 		//
 		if(m.find()) {
 			state.utilityMAX = 6.0;
@@ -187,25 +190,23 @@ public class HashedByteMatrix2 {
 		String strState = asString(current.state);
 
 		// Test if game is finished
-		String r = regex; 		
-		Pattern goalPattern = Pattern.compile(r.replaceAll("player", String.valueOf(playerid)).replaceAll("coins", "4"));
-		Matcher m = goalPattern.matcher(strState);
+
+		Matcher m = REGEX_HASWON_PLAYER1.matcher(strState);
 		if (m.find()) return -1;
 
 		// Evaluate cols
-		r = regex;
-		goalPattern = Pattern.compile(r.replaceAll("player", String.valueOf(opponent)).replaceAll("coins", "4"));
 
-		m = goalPattern.matcher(strState);
+
+
+		m = REGEX_HASWON_PLAYER2.matcher(strState);
 		if (m.find()) return -2;
 
 		/***
 		 * Check if opponent has any three in row
 		 * If this is the case, return the row that that blocks the opponent   
 		 */
-		r = regex;
-		Pattern p = Pattern.compile(r.replaceAll("player", String.valueOf(opponent)).replaceAll("coins", "3"));   
-		m = p.matcher(strState);
+
+		m = REGEX_3_IN_A_ROW_PLAYER2.matcher(strState);
 		if(m.find()) {
 			int start = m.start();
 			int row =  (int) start/cols;
@@ -271,98 +272,79 @@ public class HashedByteMatrix2 {
 	 * @return
 	 */
 	public String asString(byte[] state) {
-		Matcher m;
-		String sByte = "";
-		String out = "";
+
 		// State.length = 14
 		int row = 0;
 		int column = 0;
-		System.out.println(state.length);
+		// 0-13;
+		String[] bytes = new String[rows*cols];
+		
+
 		for (int i = 0 ; i < (state.length); i++) {
 			String s = Integer.toBinaryString(state[i]);
-			while(s.length()< 7) {
-				s=0 + s;
-			}	
-			out+=s;
-	
-		}
-		
-		String[] car =  splitByte.split(out);
-		System.out.println(Arrays.toString(car));
-			
-			/***
-			 * 
-			 * 						row	col
-			 * 						0	0
-			 * (row)*7+column		0		= 0
-			 * row++				1
-			 * (row)*7)+column		1		= 7
-			 * row++				2
-			 * i+(row)*7)+column	2		= 14´
-			 * row++				3
-			 * 	
-			 *						1	
-			 * row*7				3		= 21
-			 * row++				4
-			 * row*7				4		= 28
-			 * row++				5
-			 * (row)7				5		= 35
-			 * 
-			 * 							
-			 * column++, row=0		0	1
-			 * row*7+column			0	1	= 1
-			 * row++				1	1	
-			 * row*7+column			1	1	= 8
-			 * row++				2	1
-			 * row*					
-			 */						
-				 
-		
-		
-		return out.toString();
-	}
-	
-	
-
-	private byte[][] toByteMatrix(int[][] state) {
-		byte[][] bm = new byte[state.length][state[0].length];
-		for(int i = state.length-1; i>= 0; i--) {
-			for (int j = 0; j<  state[0].length; j++) {				
-				bm[i][j] = (byte)state[i][j];
+			while(s.length()< 6) {
+				s = 0 + s;
 			}
+			bytes[(row * cols) + column] =   getIntValue(s.substring(0,2));
+			row++;
+			bytes[(row * cols) + column] =  getIntValue(s.substring(2,4));
+			row++;
+			bytes[(row * cols) + column] =  getIntValue(s.substring(4,6));
+			row++;
+			if (row > 5) row=0;
+			if ((i % 2) == 1) column++;
+			
 		}
-		return bm;
+		String out = ""; 
+		for (String s : bytes) {
+			out+=s;
+		}
+	
+		return out;
 	}
-
-
+	
 	public byte[] toByteArray(int[][] state) {
-		// Rows by columns
-		byte[] bm = new byte[(state.length * state[0].length / 3)];
-
-		// For each row
 		/***
-		 * A 6x7 board will give a bytearray of size 14;  
-
+		 * A 6x7 board has a size of 14 bytes ;  
 		 * Write two bytes at a time. 
-		 * Traversing the all columns but only half the rows;  
+		 * Traversing the all columns but only half the rows;
+		 * The game state is saved like this
+		 * 1111100
+		 * 1111100 
+		 * 1111100    
+		 * 1100011
+		 * 2120012
+		 * 1211221
+		 * 
+		 * byte1 [00011001][00010101][00100101][00010101].....
+		 *   
 		 */
 		// Column
+		byte[] bm = new byte[(state.length * state[0].length / 3)];
 		for (int col = 0; col<  state[0].length; col++) {
 			// Add 
 			String s1 = "00";
 			String s2 = "00";
 			for(int row = state.length-1; row>= state.length-3; row--) {
 				//Row
-				s1 += Integer.toBinaryString(state[row][col]);
-				s2 += Integer.toBinaryString(state[row-3][col]);
+				s1 += getBitValue(state[row][col]);
+				s2 += getBitValue(state[row-3][col]);
 			}
-			Byte b1 = new Byte(s1);
-			Byte b2 = new Byte(s2);
-			bm[col*2] = b1;
-			bm[col*2 + 1] = b2;
 
+			bm[col*2] = Byte.parseByte(s1, 2);
+			bm[col*2 + 1] = Byte.parseByte(s2, 2);
 		}
+
 		return bm;
+	}
+
+	private String getBitValue(int i) {
+		return i == 0 ? "00" : i == 1 ? "01" : "10";   
+	}
+	private String getIntValue(String s) {
+		if (s.equals("00")) return "0";  
+		else if (s.equals("01")) return "1";
+		else return "2";   
 	}
 
 	public int[][] toIntMatrix(byte[][] state) {

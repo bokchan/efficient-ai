@@ -206,4 +206,14 @@ public class StdRandom {
             a[r] = temp;
         }
     }
+    
+    public static void shuffle(byte[] a) {
+        int N = a.length;
+        for (int i = 0; i < N; i++) {
+            int r = i + uniform(N-i);     // between i and N-1
+            byte temp = a[i];
+            a[i] = a[r];
+            a[r] = temp;
+        }
+    }
 }
