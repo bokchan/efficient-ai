@@ -1,4 +1,4 @@
-package andreas.fourconnect.itu;
+package andreas.fourconnect.itu.old;
 
 
 public class HashedTwoMatrixBitTester {

@@ -91,52 +91,20 @@ public class HashedByteMatrix {
 	
 	private RegexEvaluation Eval_P1_KILLERMOVE = new RegexEvaluation(REGEX_KILLERMOVES_PLAYER_1); 
 	private RegexEvaluation Eval_P2_KILLERMOVE = new RegexEvaluation(REGEX_KILLERMOVES_PLAYER_2);
+	
+	CURRENT_GAMESTATE currentstate = CURRENT_GAMESTATE.NA;
 
 	// The depth of cutoff 
 	private int cutOff = 6;
-	CURRENT_GAMESTATE currentstate = CURRENT_GAMESTATE.NA;
-	class GameState {
-
-
-		int turn = playerid;
-		Integer hashCode;
-		byte[][] state;
-		// The column in which a coin was inserted to get into this state. 
-		int action;
-		Integer parent= null;
-		double utilityMIN = 0.0;
-		double utilityMAX = 0.0;
-		int depth = 0;
-
-		public GameState(byte[][] state) {
-			this.hashCode =	Arrays.deepHashCode(state);
-			this.state = state;
-		}
-
-		@Override
-		public String toString() {
-			StringBuilder builder = new StringBuilder();
-			builder.append("GameState [turn=").append(turn)
-			.append(", hashCode=").append(hashCode).append(", state=")
-			.append(Arrays.toString(state)).append(", action=")
-			.append(action).append(", parent=").append(parent)
-			.append(", utilityMIN=").append(utilityMIN)
-			.append(", utilityMAX=").append(utilityMAX)
-			.append(", depth=").append(depth).append("]");
-			return builder.toString();
-		}
-	}
-
+	
 	public HashedByteMatrix(int cols, int rows, int playerid) {
 		this.cols = cols;
 		this.rows = rows;
 		explored = new HashMap<Integer, GameState>();
 		frontier = new LinkedList<GameState>();
 
-
 		this.playerid = playerid;
 		opponent = playerid == 1 ? 2 : 1;
-
 
 	}
 

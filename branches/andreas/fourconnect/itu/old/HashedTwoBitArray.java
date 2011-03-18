@@ -1,4 +1,4 @@
-package andreas.fourconnect.itu;
+package andreas.fourconnect.itu.old;
 
 import java.util.Arrays;
 import java.util.HashMap;

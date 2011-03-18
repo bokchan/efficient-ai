@@ -9,6 +9,15 @@ public class RegexExpression{
 	private int offsetX = 0;
 	private int offsetY = 0;
 	private int modMin = -1;
+	
+	/***
+	 * 1010
+	 * 1xx1011
+	 * xxxxxx1
+	 * 
+	 * 0111010
+	 * 2211221
+	 */
 	private int modMax = -1;
 	
 	public RegexExpression(String p, int offsetY,int offsetX, int modMin, int modMax) {
