@@ -24,7 +24,7 @@ public class MainLogicNew implements IGameLogic {
         this.rows = rows;
         this.playerID = playerID;
         this.opponent = getOpponentPlayerID();
-        throw new UnsupportedOperationException("Not supported yet.");
+        
     }
 
     public void insertCoin(int column, int playerID) {
