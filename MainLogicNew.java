@@ -16,7 +16,12 @@ public class MainLogicNew implements IGameLogic {
     private int opponent;
     
     
+    
     private GameHeuristics heuristics;
+    
+    public MainLogicNew() {
+    	
+    }
     
     public void initializeGame(int columns, int rows, int playerID) {
     	heuristics = new GameHeuristics(columns, rows, playerID);
@@ -28,14 +33,13 @@ public class MainLogicNew implements IGameLogic {
     }
 
     public void insertCoin(int column, int playerID) {
-    	heuristics.setCurrentState(column, playerID);
+    	heuristics.updateCurrentState(column, playerID);
     }
 
     public int decideNextMove() {
-    	
-    	return heuristics.evaluateGameState();
-        
-        
+    	int move = heuristics.evaluateGameState(); 
+    	GameHelper.Trace("Move: "  + move);
+    	return move; 
     }
 
     public Winner gameFinished() {

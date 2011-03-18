@@ -59,4 +59,8 @@ public class GameHelper {
 		}
 		return ba2;
 	}
+	
+	public static void Trace(String s) {
+		System.out.println("Trace: " +   s);
+	} 
 }

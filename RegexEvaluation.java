@@ -61,8 +61,9 @@ public class RegexEvaluation {
     }
 
     private void loadRegularExpressions(String filename) {
-    	String dir = System.getProperty("user.dir") + System.getProperty("file.separator") + "trunk" +System.getProperty("file.separator") + "xml" + System.getProperty("file.separator");  
-        File file = new File( dir + filename);
+    	String dir = System.getProperty("user.dir") + System.getProperty("file.separator") + "trunk" +System.getProperty("file.separator") + "xml" + System.getProperty("file.separator");
+    	System.out.println(dir);
+        File file = new File("C:\\Users\\Andreas\\workspace\\Efficient AI\\trunk\\xml\\" + filename);
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
         DocumentBuilder db = null;

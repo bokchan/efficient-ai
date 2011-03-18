@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -242,11 +241,15 @@ public class GameHeuristics {
 			// Else we start exploring the state space
 
 			addGameStateToFrontier(current);
-			if (exploredContains(current)) {
-				exploreBoardGameState();
-			} else { 
-				exploreBoardGameState(playerID);
-			} 
+			GameHelper.Trace("Added state to frontier");
+			exploreBoardGameState(playerID);
+//			if (exploredContains(current)) {
+//				GameHelper.Trace("Calling exploreBoardGameState()");
+//				exploreBoardGameState();
+//			} else { 
+//				GameHelper.Trace("Calling exploreBoardGameState(playerID)");
+//				exploreBoardGameState(playerID);
+//			} 
 		}		
 		//return (next !=null) ? next.action: Integer.MIN_VALUE;
 		// TODO: How do we get the best move from a search
@@ -269,13 +272,9 @@ public class GameHeuristics {
 		return explored;
 	}
 
-	public void setCurrentState(int move, int player) {
-
-		if ((current = explored.get(Arrays.deepHashCode(getNewState(move, player)))) == null) {
-			current = current.createGamestate(move-1, player);
-		} else {
-			// This is the start of the game or the opponent has made a move not anticipated by us
-		}
+	public void updateCurrentState(int move, int player) {
+		GameHelper.Trace("Move: " + move + "Player: " + player );
+		current = current.createGamestate(move-1, player); 
 	}
 
 	private void updateCurrentState(GameState state){
@@ -322,7 +321,7 @@ public class GameHeuristics {
 	private byte[][] getNewState(int move, int playerid) {
 		byte[][] newState =  GameHelper.copyArray(current.state);
 
-		for (int row = newState.length; row >=0; row--) {
+		for (int row = newState.length-1; row >=0; row--) {
 			if (newState[row][move-1] == 0)
 			{newState[row][move-1] = (byte)playerid;
 			break;
@@ -366,4 +365,6 @@ public class GameHeuristics {
 		
 		return IGameLogic.Winner.NOT_FINISHED;
 	}
+	
+	
 }
