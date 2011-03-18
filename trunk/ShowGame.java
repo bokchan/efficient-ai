@@ -13,9 +13,9 @@
  */
 
 
-import javax.swing.*;
-import java.net.URLClassLoader;
-import java.lang.reflect.*;
+import java.lang.reflect.InvocationTargetException;
+
+import javax.swing.JFrame;
 
 public class ShowGame
 {
@@ -129,5 +129,4 @@ public class ShowGame
         }
         return retGL;
     }
-
 }
