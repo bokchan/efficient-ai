@@ -54,7 +54,6 @@ public class RegexEvaluation {
                 if (matcher.start() % cols >= r.getModMin() && matcher.start() % cols <= r.getModMax()) {
                 	 
                 	return new RegexResult(matcher.start(), r.getyOffset(), r.getXOffset(),getMatchResultState(playerid), playerid);
-                    
                 }
             }
         }
@@ -62,8 +61,8 @@ public class RegexEvaluation {
     }
 
     private void loadRegularExpressions(String filename) {
-
-        File file = new File(filename);
+    	String dir = System.getProperty("user.dir") + System.getProperty("file.separator") + "trunk" +System.getProperty("file.separator") + "xml" + System.getProperty("file.separator");  
+        File file = new File( dir + filename);
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
         DocumentBuilder db = null;
@@ -87,16 +86,17 @@ public class RegexEvaluation {
                         Integer.valueOf(xpath.evaluate("modMax", n))));
             }
 
+            
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } catch (SAXException e) {
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+
             e.printStackTrace();
         } catch (XPathExpressionException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+        } catch (Exception e) {
         }
         
         

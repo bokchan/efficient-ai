@@ -12,8 +12,8 @@ public class GameState{
 		int action;
 		Integer parent= null;
 		List<Integer> children = null; 
-		double utilityMIN = 0.0;
-		double utilityMAX = 0.0;
+		double utilityPlayer1 = 0.0;
+		double utilityPlayer2 = 0.0;
 		int depth = 0;
 
 		public GameState(byte[][] state) {
@@ -29,8 +29,8 @@ public class GameState{
 			.append(", hashCode=").append(hashCode).append(", state=")
 			.append(Arrays.toString(state)).append(", action=")
 			.append(action).append(", parent=").append(parent)
-			.append(", utilityMIN=").append(utilityMIN)
-			.append(", utilityMAX=").append(utilityMAX)
+			.append(", utilityMIN=").append(utilityPlayer1)
+			.append(", utilityMAX=").append(utilityPlayer2)
 			.append(", depth=").append(depth).append("]");
 			return builder.toString();
 		}
@@ -39,9 +39,11 @@ public class GameState{
 		 * 
 		 * 
 		 */
-		public GameState createGamestate(int newCol, int newRow, int playerid) {
+		public GameState createGamestate(int newCol, int playerid) {
 			byte[][] newState = GameHelper.copyArray(this.state);
-			newState[newRow][newCol] = (byte )playerid;
+			for (int i = this.state.length -1; i>= 0; i--) {
+				if (this.state[i][newCol] == 0) newState[i][newCol] = (byte) playerid; 
+			}
 			GameState newGS = new GameState(state);
 			newGS.parent = this.hashCode;
 			newGS.action = newCol;
