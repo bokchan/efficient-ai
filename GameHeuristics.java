@@ -61,9 +61,9 @@ public class GameHeuristics {
 	private  Queue<GameState> frontier;
 	private int cutOff = 6;
 
-	private RegexEvaluation threeInARow = new RegexEvaluation("3inarow.xml", RegexEvaluation.MATCH_TYPE.KILLER_MOVE);
-	private RegexEvaluation killermoves = new RegexEvaluation("killermoves.xml", RegexEvaluation.MATCH_TYPE.THREE_IN_A_ROW);
-	private RegexEvaluation fourInARow = new RegexEvaluation("winnermoves.xml",RegexEvaluation.MATCH_TYPE.FOUR_IN_A_ROW);
+	private RegexEvaluation threeInARow = new RegexEvaluation("RegexThreeInARow.xml", RegexEvaluation.MATCH_TYPE.KILLER_MOVE);
+	private RegexEvaluation killermoves = new RegexEvaluation("RegexKillerMoves.xml", RegexEvaluation.MATCH_TYPE.THREE_IN_A_ROW);
+	private RegexEvaluation fourInARow = new RegexEvaluation("RegexFourInARow.xml",RegexEvaluation.MATCH_TYPE.FOUR_IN_A_ROW);
 
 	private GameState current;
 
