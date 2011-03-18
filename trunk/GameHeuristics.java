@@ -72,9 +72,10 @@ public class GameHeuristics {
 		this.rows = rows;
 		explored = new HashMap<Integer, GameState>();
 		frontier = new LinkedList<GameState>();
-
+		
 		this.playerID = playerid;
 		opponent = getOpponentPlayerID();
+		updateCurrentState(new GameState(new byte[rows][cols]));
 	}
 
 	/***
