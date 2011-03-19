@@ -1,24 +1,24 @@
 
 public class GameHelper {
-	
-//	/***
-//	 * Converts an int[] to a int[][]  
-//	 * @param array
-//	 * @return
-//	 */
-//	public int[][] convertToMatrix(int[] array) { 
-//		int aIdx = 0;
-//		int[][] matrix = new int[rows][cols];
-//
-//		for (int row = rows-1; row >= 0; row--) {
-//			for (int col = 0; col <cols ;  col++) {
-//				matrix[row][col] = array[aIdx];
-//				aIdx++;
-//			}
-//		}
-//		return matrix;
-//	}
-	
+
+	//	/***
+	//	 * Converts an int[] to a int[][]  
+	//	 * @param array
+	//	 * @return
+	//	 */
+	//	public int[][] convertToMatrix(int[] array) { 
+	//		int aIdx = 0;
+	//		int[][] matrix = new int[rows][cols];
+	//
+	//		for (int row = rows-1; row >= 0; row--) {
+	//			for (int col = 0; col <cols ;  col++) {
+	//				matrix[row][col] = array[aIdx];
+	//				aIdx++;
+	//			}
+	//		}
+	//		return matrix;
+	//	}
+
 	/**
 	 * Converts a byte[][] to an int[][]
 	 * @param state
@@ -33,7 +33,7 @@ public class GameHelper {
 		}
 		return bm;
 	}
-	
+
 	/***
 	 * Converts an int[][] to a byte[][]
 	 * @param state
@@ -49,7 +49,7 @@ public class GameHelper {
 		}
 		return bm;
 	}
-	
+
 	public static byte[][] copyArray(byte[][] ba) {
 		byte[][] ba2 = new byte[ba.length][ba[0].length];
 		for (int i = 0; i < ba.length; i++) {
@@ -59,8 +59,8 @@ public class GameHelper {
 		}
 		return ba2;
 	}
-	
+
 	public static void Trace(String s) {
-		System.out.println("Trace: " +   s);
-	} 
+		System.out.println("Trace: " + s);
+	}
 }

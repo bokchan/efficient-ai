@@ -46,7 +46,9 @@ public class MainLogicNew implements IGameLogic {
     }
 
     public Winner gameFinished() {
-    	return heuristics.getWinner();
+    	Winner w = heuristics.getWinner();
+    	GameHelper.Trace("Game status: " + w);
+    	return w;
     }
 
     public int getOpponentPlayerID(){

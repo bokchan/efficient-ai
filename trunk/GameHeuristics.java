@@ -2,7 +2,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
-
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /***
  * Save the gamestate in bytearray to save space.
@@ -50,7 +51,6 @@ import java.util.Queue;
  *
  */
 public class GameHeuristics {
-
 	private int cols = 0;
 	private int rows = 0;
 	private int playerID;
@@ -58,10 +58,12 @@ public class GameHeuristics {
 
 	private Map<Integer, GameState> explored;
 	private  Queue<GameState> frontier;
+	private SortedMap<Integer, Integer> frontierOptimal; 
 	private int cutOff = 6;
+	static boolean found = false;
 
-	private RegexEvaluation threeInARow = new RegexEvaluation("RegexThreeInARow.xml", RegexEvaluation.MATCH_TYPE.KILLER_MOVE);
-	private RegexEvaluation killermoves = new RegexEvaluation("RegexKillerMoves.xml", RegexEvaluation.MATCH_TYPE.THREE_IN_A_ROW);
+	private RegexEvaluation threeInARow = new RegexEvaluation("RegexThreeInARow.xml", RegexEvaluation.MATCH_TYPE.THREE_IN_A_ROW);
+	private RegexEvaluation killermoves = new RegexEvaluation("RegexKillerMovesMinimal.xml", RegexEvaluation.MATCH_TYPE.KILLER_MOVE);
 	private RegexEvaluation fourInARow = new RegexEvaluation("RegexFourInARow.xml",RegexEvaluation.MATCH_TYPE.FOUR_IN_A_ROW);
 
 	private GameState current;
@@ -71,9 +73,10 @@ public class GameHeuristics {
 		this.rows = rows;
 		explored = new HashMap<Integer, GameState>();
 		frontier = new LinkedList<GameState>();
-		
+		frontierOptimal = new TreeMap<Integer, Integer>();
+
 		this.playerID = playerid;
-		opponent = getOpponentPlayerID();
+		getOpponentPlayerID();
 		updateCurrentState(new GameState(new byte[rows][cols]));
 	}
 
@@ -93,8 +96,12 @@ public class GameHeuristics {
 		{
 			for (Integer childHash : gamestate.children) {
 				GameState child = explored.get(childHash); 
-				if (!MinMax(child)) { addGameStateToFrontier(child); } else {
-					updateCurrentState(child); 
+				if (!MinMax(child)) { 
+					addGameStateToFrontier(child); } 
+				else {
+					updateCurrentState(child);
+
+					return;
 				} 
 			}
 		} else {
@@ -103,8 +110,6 @@ public class GameHeuristics {
 		// call exploregamestate again, going depth first;
 		exploreBoardGameState();
 	}
-
-
 	/***
 	 * Function that receives an explored board state isOpponent
 	 * Search till all leaves within the cutoff have been explored or a goal state has been reached
@@ -112,57 +117,115 @@ public class GameHeuristics {
 	 * @param gamestate
 	 * @return
 	 */
-	private void exploreBoardGameState(int player) 
+	private boolean exploreBoardGameState(int player) 
 	{
 		// Get the head of the queue
-		// Check if the depth is ok, keep dequeueing or what 
-		GameState gamestate = frontier.poll();
-		if (gamestate != null && (gamestate.depth - current.depth) < cutOff) 
-		{
-			// We alternate the turn 
-			player = player == playerID ? opponent : playerID;
-			for (int col = 0; col < cols; col++) 
-			{
-				for (int row = rows-1; row >= 0; row--) {
-					// Iterate through columns top to bottom
-					// If we encounter an empty field, explore it
-					if (gamestate.state[row][col] == 0) {
+		// Check if the depth is ok, keep dequeueing or what
+		// TODO: set current / next during search
 
-						GameState newGS  = gamestate.createGamestate(col, player);
-						// Assign utility
-						assignUtility(newGS);
+		if (!found) {
+			GameState gamestate = frontier.poll();
+			addGameStateToExplored(gamestate);
+			if (gamestate != null && frontier.size() < Math.pow(7, 5))
+			{   	
+				// We alternate the turn 
+				player = player == playerID ? opponent : playerID;
+				for (int col = 0; col < cols; col++) 
+				{
+					for (int row = rows-1; row >= 0; row--) {
+						// Iterate through columns top to bottom
+						// If we encounter an empty field, explore it
+						if (gamestate.state[row][col] == 0) {
+							GameState newGS  = gamestate.createGamestate(col, player);
+							// Assign utility
+							assignUtility(newGS);
+							// put gamestate on frontier
+							// TODO: Alpha beta prune
+							// If utility is acceptable add as child and add to gamestate
+							gamestate.addToChildren(newGS);						
 
-						// put gamestate on frontier
-						// TODO: Alpha beta prune
-						// If utility is acceptable add as child and add to gamestate
-						gamestate.addToChildren(newGS);
-						addGameStateToFrontier(newGS);
-						row=-1; 						//Break the loop 
+							if (MinMax(newGS) && !found ) {
+								GameState gBack = gamestate;  
+								while(gBack.parent != null) {
+									// We hit the child of the current node 
+									if (gBack.parent.equals(current.hashCode)) {
+										GameHelper.Trace("Found optimal state");
+										updateCurrentState(gBack);
+										frontier.clear();
+										found = true;
+										break;
+									}  else {
+										gBack = explored.get(gBack.parent);
+									}
+								}
+							}
+
+							if ((newGS.depth - current.depth) <= cutOff) {
+								addGameStateToFrontier(newGS);
+							}
+						}
 					}
+
+				}
+				GameHelper.Trace(
+						"Explored so far" + explored.size()+ 
+						"\nFrontier size:" + frontier.size() + 
+						"\nDepth:" + gamestate.depth);
+
+				// call exploregamestate again, going depth first;
+				if (!found) exploreBoardGameState(player);
+			} else {
+				GameHelper.Trace("Frontier limit reached: ");
+				if (!found) {
+					GameState newGS; 
+					// Of the explored states get the one with the best minmax, then search backwards to child of current
+					if (playerID == 1){
+						newGS =  getNextByParent(frontierOptimal.get(frontierOptimal.firstKey()));
+					
+					}   else {
+						newGS =  getNextByParent(frontierOptimal.get(frontierOptimal.lastKey()));
+					}
+					updateCurrentState(newGS);
+					frontier.clear();
+					return true;
 				}
 			}
-
-		} else {
-			return;
 		}
-		// end cutoff check
-		addGameStateToExplored(gamestate);
-		// call exploregamestate again, going depth first;
-		exploreBoardGameState(player);
+		return false;
 	}
+
+	private GameState getNextByParent(Integer hashcode) {
+		GameHelper.Trace("getNextByParent: " + hashcode);
+		GameHelper.Trace("current: " + current.hashCode);
+
+		GameHelper.Trace("Frontier optimal: " + frontierOptimal.toString());
+		GameState gBack = explored.get(hashcode);
+		//
+
+		while(gBack.parent != null) {
+			// We hit the child of the current node 
+			if (gBack.parent.equals(current.hashCode)) {
+				GameHelper.Trace("Found the optimal child of the current node"); 
+				break;
+			} else { 
+				gBack = explored.get(gBack.parent);
+			}
+		}
+		return gBack;
+	} 
 
 	/***
 	 * For now only for the first player
-	 * 
+
 	 * @param state
 	 */
 	private void assignUtility(GameState state) {
 		// Get state as string
-		String strState = state.stateAsString();
+		String strState = state.stateAsString(); 
 
 		RegexResult result = fourInARow.match(strState, state.turn);
 		if (result != null) {
-			if (result.resultstate.equals( RegexEvaluation.MATCH_RESULT_STATE.PLAYER1WON)) {
+			if (result.resultstate.equals(RegexEvaluation.MATCH_RESULT_STATE.PLAYER1WON)) {
 				state.utilityPlayer1 = -8;
 				state.utilityPlayer1 = 0;
 			} else {
@@ -178,7 +241,8 @@ public class GameHeuristics {
 		 */
 		result = threeInARow.match(strState, state.turn);
 		if (result != null) {
-			if (result.resultstate.equals(RegexEvaluation.MATCH_RESULT_STATE.PLAYER1THREEINAROW)) {
+			GameHelper.Trace("Assignutility: " +  result.resultstate.name());
+			if (result.resultstate.equals(RegexEvaluation.MATCH_RESULT_STATE.PLAYER2THREEINAROW)) {
 				state.utilityPlayer1 = -8;
 				state.utilityPlayer2 = 0;
 			} else {
@@ -186,22 +250,21 @@ public class GameHeuristics {
 				state.utilityPlayer2 = 8;
 			}
 		} 
-
 		/***
 		 * check for killer move
 		 */
 		result = killermoves.match(strState, state.turn);
 		if (result != null){
 			if (result.resultstate.equals(RegexEvaluation.MATCH_RESULT_STATE.PLAYER1KILLERMOVE)) {
-			state.utilityPlayer2 = -8;
-			state.utilityPlayer1 = 4;
+				state.utilityPlayer1 = -8;
+				state.utilityPlayer2 = 4;
 			} else {
-				state.utilityPlayer2 = -4;
-				state.utilityPlayer1 = 8;
+				state.utilityPlayer1 = -4;
+				state.utilityPlayer2 = 8;
 			}
 		}
+		return;
 	}
-
 	/***
 	 * 
 	 * Evaluates the gamestate. Only public access. Is called from GameLogic. 
@@ -210,50 +273,57 @@ public class GameHeuristics {
 
 	public int evaluateGameState() 
 	{
+		Stopwatch w = null;
+		GameHelper.Trace("Evaluating gamestate");
 		// Clear all objects from the frontier; 
 		frontier.clear();
-
-		// Set the current gamestate
-		//setCurrentState(move, player);
 		// Add to frontier
 
 		// Get state as string
 		String strState = current.stateAsString();
-		
+
 		/***
 		 * Check if opponent has any three in row
 		 * If this is the case, return the row that that blocks the opponent   
 		 */
 		RegexResult result = threeInARow.match(strState, getOpponentPlayerID());
 		if (result != null) {
+			// Return blocking move
 			setMove(result);
 			return current.action;
 		}
 		/***
 		 * Check if we have three in a row
 		 */
+
 		result = threeInARow.match(strState, playerID);
 		if(result != null ) {
-			// Return blocking move
 			setMove(result);
 			return current.action;
 		} else {
 			// Else we start exploring the state space
-
 			addGameStateToFrontier(current);
 			GameHelper.Trace("Added state to frontier");
+			w = new Stopwatch();
+			found = false;
 			exploreBoardGameState(playerID);
-//			if (exploredContains(current)) {
-//				GameHelper.Trace("Calling exploreBoardGameState()");
-//				exploreBoardGameState();
-//			} else { 
-//				GameHelper.Trace("Calling exploreBoardGameState(playerID)");
-//				exploreBoardGameState(playerID);
-//			} 
+
+			GameHelper.Trace( "Time to decide: " +  w.elapsedTime());
+			return current.action;
+			//			if (exploredContains(current)) {
+			//				GameHelper.Trace("Calling exploreBoardGameState()");
+			//				w = new Stopwatch();
+			//				exploreBoardGameState();
+			//			} else { 
+			//
+			//				GameHelper.Trace("Calling exploreBoardGameState(playerID)");
+			//				w = new Stopwatch();
+			//				exploreBoardGameState(playerID);
+			//			} 
 		}		
 		//return (next !=null) ? next.action: Integer.MIN_VALUE;
 		// TODO: How do we get the best move from a search
-		return current.action;
+
 	}
 
 	/****
@@ -261,7 +331,19 @@ public class GameHeuristics {
 	 * @param state
 	 */
 	private void addGameStateToFrontier(GameState state) {
+		addGameStateToFrontierOptimal(state);
 		frontier.add(state);
+
+	}
+
+	private void addGameStateToFrontierOptimal(GameState state) {		
+		if (playerID == 1) {
+			frontierOptimal.put(state.utilityPlayer1, state.parent);
+
+		}else {
+			frontierOptimal.put(state.utilityPlayer2, state.parent);
+
+		}
 	}
 
 	public Queue<GameState> getFrontier() {
@@ -273,15 +355,20 @@ public class GameHeuristics {
 	}
 
 	public void updateCurrentState(int move, int player) {
-		GameHelper.Trace("Move: " + move + "Player: " + player );
-		current = current.createGamestate(move, player); 
+		GameHelper.Trace("Player: " + player + "Move: " + move);
+		GameState g = current.createGamestate(move, player);
+		current = g;
+		GameHelper.Trace("Board \n" + current.stateAsStringMatrix());	
 	}
 
+	/***
+	 * Called from the explore methods
+	 * @param state
+	 */
 	private void updateCurrentState(GameState state){
-		// Implicitly updates gamestate by asignning and evaluting at the same time  
-		if ((current = explored.get(state.hashCode)) ==  null) {
-			current = state; 
-		} 
+		// Implicitly updates gamestate by asignning and evaluting at the same time
+		GameHelper.Trace("Current state updated");
+		current = state; 
 	}
 
 	private void setMove(RegexResult result) {
@@ -310,25 +397,11 @@ public class GameHeuristics {
 
 	private int getOpponentPlayerID(){
 		if (playerID == 1){
-			opponent = 2;
 			return 2;
+
 		} else {
-			opponent = 1;
+			return 1;
 		}
-		return opponent;
-	}
-
-	private byte[][] getNewState(int move, int playerid) {
-		byte[][] newState =  GameHelper.copyArray(current.state);
-
-		for (int row = newState.length-1; row >=0; row--) {
-			if (newState[row][move] == 0)
-			{newState[row][move] = (byte)playerid;
-			break;
-
-			}
-		}
-		return newState;
 	}
 
 	/***
@@ -337,30 +410,40 @@ public class GameHeuristics {
 	 * @return
 	 */
 	private boolean MinMax(GameState g) {
-		if (playerID == 1) {
-			return g.utilityPlayer1 < -6 && g.utilityPlayer2 < 8;  
+		if (g.turn == 1) {
+			return g.utilityPlayer1 == -8;   
 		} else {
-			return g.utilityPlayer1 < -6 && g.utilityPlayer1 > -6;
+			return g.utilityPlayer2 == 8;
 		}	
 	}
-	
+
 	public IGameLogic.Winner getWinner() {
 		// Get state as string
 		String strState = current.stateAsString();
-		
-		
+
 		//Have we won
 		RegexResult   result  = fourInARow.match(strState, playerID);
 		if (result != null) {
 			return IGameLogic.Winner.PLAYER1;
-		} 
+		}
 
 		// 	Has opponent won 
 		result= fourInARow.match(strState, current.turn);
 		if (result !=null) {
 			return IGameLogic.Winner.PLAYER2;
 		}
-		
+
 		return IGameLogic.Winner.NOT_FINISHED;
 	}	
+
+	public RegexResult matchFourInARow(String input, int player) {
+		return fourInARow.match(input, player);
+	}
+
+	public RegexResult matchThreeInARow(String input, int player) {
+		return threeInARow.match(input, player);
+	}
+	public RegexResult matchKillerMoves(String input, int player) {
+		return killermoves.match(input, player);
+	}
 }

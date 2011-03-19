@@ -1,25 +1,27 @@
+import junit.framework.Assert;
+
+import org.junit.Test;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 
-import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
- *
+ *	
  * @author visti
  */
 public class TestLogicTest implements IGameLogic {
 
-    @Test
+   @Test
     public void testPlay1() throws Exception {
         System.out.println("play");
 
         SimulateGame instance = new SimulateGame();
         IGameLogic.Winner expResult = Winner.TIE;
         IGameLogic.Winner result = instance.play("MainLogicNew", "GameLogicDummy1");
-        assertEquals(expResult, result);
+        Assert.assertEquals(expResult, result);
 
     }
 
@@ -30,7 +32,7 @@ public class TestLogicTest implements IGameLogic {
         SimulateGame instance = new SimulateGame();
         IGameLogic.Winner expResult = Winner.TIE;
         IGameLogic.Winner result = instance.play("MainLogicNew", "GameLogicDummy1");
-        assertEquals(expResult, result);
+        Assert.assertEquals(expResult, result);
 
     }
 
