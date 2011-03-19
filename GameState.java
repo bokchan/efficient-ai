@@ -12,8 +12,8 @@ public class GameState{
 		int action;
 		Integer parent= null;
 		List<Integer> children = null; 
-		double utilityPlayer1 = 0.0;
-		double utilityPlayer2 = 0.0;
+		Integer utilityPlayer1 = 0;
+		Integer utilityPlayer2 = 0;
 		int depth = 0;
 
 		public GameState(byte[][] state) {
@@ -35,20 +35,36 @@ public class GameState{
 			return builder.toString();
 		}
 		
+		
+		public byte[][] peekGamestate(int newCol, int playerid) {
+			byte[][] newState = GameHelper.copyArray(this.state);
+			for (int i = newState.length -1; i>= 0; i--) {
+				if (newState[i][newCol] ==  (byte )0) { 
+					newState[i][newCol] = (byte) playerid;
+					i = -1;
+				}
+			}
+			return newState;
+		}  
+		
 		/***
 		 * 
 		 * 
 		 */
 		public GameState createGamestate(int newCol, int playerid) {
-			byte[][] newState = GameHelper.copyArray(this.state);
-			for (int i = this.state.length -1; i>= 0; i--) {
-				if (this.state[i][newCol] == 0) newState[i][newCol] = (byte) playerid; 
-			}
-			GameState newGS = new GameState(state);
+			  
+			 byte[][] newState = GameHelper.copyArray(this.state);
+			for (int i = newState.length -1; i>= 0; i--) {
+				if (newState[i][newCol] ==  (byte )0) { 
+					newState[i][newCol] = (byte) playerid;
+					i = -1;
+				}
+			}	
+			
+			GameState newGS = new GameState(newState);
 			newGS.parent = this.hashCode;
 			newGS.action = newCol;
-			this.turn = playerid;
-			
+			newGS.turn = playerid;
 			newGS.depth = this.depth +1;
 			return newGS;
 			
@@ -78,6 +94,17 @@ public class GameState{
 					int val = state[row][col];
 					sb.append(val);   
 				}
+			}
+			return sb.toString();
+		}
+		
+		public String stateAsStringMatrix() {
+			StringBuilder sb = new StringBuilder();
+			for (int row = 0; row < state.length; row++) {
+				for (int col = 0 ;col < state[0].length; col++) {
+					sb.append(state[row][col]);
+				}
+				sb.append("\n");
 			}
 			return sb.toString();
 		}

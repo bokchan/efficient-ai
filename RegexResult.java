@@ -3,7 +3,6 @@
 
 public class RegexResult {
 	RegexEvaluation.MATCH_RESULT_STATE resultstate = null;
-	
 	int matchStartIdx = -1;
 	int offsetY = -1;
 	int offsetX = -1;
