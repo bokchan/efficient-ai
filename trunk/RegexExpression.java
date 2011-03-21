@@ -9,6 +9,7 @@ public class RegexExpression{
 	private int offsetX = 0;
 	private int offsetY = 0;
 	private int modMin = -1;
+	private int modMax = -1;
 	
 	/***
 	 * 1010
@@ -18,7 +19,7 @@ public class RegexExpression{
 	 * 0111010
 	 * 2211221
 	 */
-	private int modMax = -1;
+	
 	
 	public RegexExpression(String p, int offsetY,int offsetX, int modMin, int modMax) {
 		this.patternPlayer1 = Pattern.compile(p.replace("VAR", "1"));

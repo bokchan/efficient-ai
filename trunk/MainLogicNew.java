@@ -13,9 +13,7 @@ public class MainLogicNew implements IGameLogic {
     private int cols = 0;
     private int rows = 0;
     private int playerID;
-    private int opponent;
-    
-    
+    private int opponent;    
     
     private GameHeuristics heuristics;
     
@@ -33,6 +31,7 @@ public class MainLogicNew implements IGameLogic {
     }
 
     public void insertCoin(int column, int playerID) {
+    	GameHelper.Trace("Insert coin called: (" + column +"," + playerID + ")" );
     	heuristics.updateCurrentState(column, playerID);
     }
 
@@ -57,8 +56,4 @@ public class MainLogicNew implements IGameLogic {
         }
         return 1;
     }
-   
-	
-	
-	
 }

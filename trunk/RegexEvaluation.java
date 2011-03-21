@@ -20,8 +20,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class RegexEvaluation {
-	public static enum MATCH_RESULT_STATE {PLAYER1WON, PLAYER2WON, PLAYER1THREEINAROW, PLAYER2THREEINAROW, PLAYER1KILLERMOVE, PLAYER2KILLERMOVE, TIE, UNDEFINED};
-	public static enum MATCH_TYPE {FOUR_IN_A_ROW, THREE_IN_A_ROW, KILLER_MOVE};
+	public static enum MATCH_RESULT_STATE {PLAYER1WON, PLAYER2WON, PLAYER1THREEINAROW, PLAYER2THREEINAROW, PLAYER1KILLERMOVE, PLAYER2KILLERMOVE, TIE, UNDEFINED, PLAYER1PREKILLER, PLAYER2PREKILLER};
+	public static enum MATCH_TYPE {FOUR_IN_A_ROW, THREE_IN_A_ROW, KILLER_MOVE, BASIC};
 	private List<RegexExpression> patterns;
 	private Matcher matcher;
 	int cols = 7;
@@ -48,10 +48,12 @@ public class RegexEvaluation {
 	public RegexResult match(String input, int playerid) {
 		for (RegexExpression r : patterns) {
 			matcher = r.getPattern(playerid).matcher(input);
-
 			while (matcher.find()) {
 				/**** A little hack. The patterns are not independent of the place of occurence
-				 * However they can be evaluated based on mod
+				 * However they can be evaluated based on mod value of the start index against the number of columns
+				 * 8%7 = 1, 
+				 * 789
+				 * 0123456
 				 */
 				if (matcher.start() % cols >= r.getModMin() && matcher.start() % cols <= r.getModMax()) {
 					GameHelper.Trace("Matched in regex: " + playerid);
@@ -119,6 +121,9 @@ public class RegexEvaluation {
 			break;
 		case KILLER_MOVE : 
 			state  = (playerid == 1) ? MATCH_RESULT_STATE.PLAYER1KILLERMOVE : MATCH_RESULT_STATE.PLAYER2KILLERMOVE;
+			break;
+		case BASIC : 
+			state  = (playerid == 1) ? MATCH_RESULT_STATE.PLAYER1PREKILLER : MATCH_RESULT_STATE.PLAYER2PREKILLER;
 			break;
 			default : 
 			 state = MATCH_RESULT_STATE.UNDEFINED;
