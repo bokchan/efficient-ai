@@ -22,13 +22,21 @@ public class TestLogicTest implements IGameLogic {
         IGameLogic.Winner expResult = Winner.TIE;
         IGameLogic.Winner result = instance.play("MainLogicNew", "GameLogicDummy1");
         Assert.assertEquals(expResult, result);
-
     }
 
     @Test
     public void testPlay2() throws Exception {
         System.out.println("play");
 
+        SimulateGame instance = new SimulateGame();
+        IGameLogic.Winner expResult = Winner.TIE;
+        IGameLogic.Winner result = instance.play("MainLogicNew", "GameLogicDummy1");
+        Assert.assertEquals(expResult, result);
+    }
+    
+    @Test
+    public void testPlay3( ) throws Exception {
+    	System.out.println("play");
         SimulateGame instance = new SimulateGame();
         IGameLogic.Winner expResult = Winner.TIE;
         IGameLogic.Winner result = instance.play("MainLogicNew", "GameLogicDummy1");
