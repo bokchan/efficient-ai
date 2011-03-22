@@ -56,9 +56,8 @@ public class RegexEvaluation {
 				 * 0123456
 				 */
 				if (matcher.start() % cols >= r.getModMin() && matcher.start() % cols <= r.getModMax()) {
-					GameHelper.Trace("Matched in regex: " + playerid);
-					GameHelper.Trace("Matchtype in regex: " + matchtype.name());
-					return new RegexResult(matcher.start(), r.getyOffset(), r.getXOffset(),getMatchResultState(playerid), playerid);
+					GameHelper.Trace(true, "Matchtype in regex: " + matchtype.name());
+					return new RegexResult(matcher.start(), r.getOffsetY(), r.getOffsetX(),getMatchResultState(playerid), playerid);
 				}
 			}
 		}
@@ -66,7 +65,7 @@ public class RegexEvaluation {
 	}
 
 	private void loadRegularExpressions(String filename) {
-		GameHelper.Trace("Loading regex patterns");
+		GameHelper.Trace(false, "Loading regex patterns");
 		String dir = System.getProperty("user.dir") + System.getProperty("file.separator") + "trunk" +System.getProperty("file.separator") + "xml" + System.getProperty("file.separator");
 		System.out.println(dir);
 		File file = new File("C:\\Users\\Andreas\\workspace\\Efficient AI 2\\trunk\\xml\\" + filename);
@@ -86,7 +85,9 @@ public class RegexEvaluation {
 				// Now we got a regex expressions
 				Node n = expressions.item(i);
 
-				patterns.add(new RegexExpression(xpath.evaluate("pattern", n),
+				patterns.add(new RegexExpression(
+						xpath.evaluate("description", n),
+						xpath.evaluate("pattern", n),
 						Integer.valueOf(xpath.evaluate("offsetY", n)),
 						Integer.valueOf(xpath.evaluate("offsetX", n)),
 						Integer.valueOf(xpath.evaluate("modMin", n)),
@@ -111,25 +112,25 @@ public class RegexEvaluation {
 	}
 
 	private MATCH_RESULT_STATE getMatchResultState(int playerid) {
-		MATCH_RESULT_STATE state = MATCH_RESULT_STATE.UNDEFINED;
+		MATCH_RESULT_STATE resultState = MATCH_RESULT_STATE.UNDEFINED;
 		switch (matchtype) {
 		case FOUR_IN_A_ROW:
-			state = (playerid == 1) ? MATCH_RESULT_STATE.PLAYER1WON : MATCH_RESULT_STATE.PLAYER2WON;
+			resultState = (playerid == 1) ? MATCH_RESULT_STATE.PLAYER1WON : MATCH_RESULT_STATE.PLAYER2WON;
 			break;
 		case THREE_IN_A_ROW : 
-			state = (playerid == 1) ? MATCH_RESULT_STATE.PLAYER1THREEINAROW : MATCH_RESULT_STATE.PLAYER2THREEINAROW;
+			resultState = (playerid == 1) ? MATCH_RESULT_STATE.PLAYER1THREEINAROW : MATCH_RESULT_STATE.PLAYER2THREEINAROW;
 			break;
 		case KILLER_MOVE : 
-			state  = (playerid == 1) ? MATCH_RESULT_STATE.PLAYER1KILLERMOVE : MATCH_RESULT_STATE.PLAYER2KILLERMOVE;
+			resultState  = (playerid == 1) ? MATCH_RESULT_STATE.PLAYER1KILLERMOVE : MATCH_RESULT_STATE.PLAYER2KILLERMOVE;
 			break;
 		case BASIC : 
-			state  = (playerid == 1) ? MATCH_RESULT_STATE.PLAYER1PREKILLER : MATCH_RESULT_STATE.PLAYER2PREKILLER;
+			resultState  = (playerid == 1) ? MATCH_RESULT_STATE.PLAYER1PREKILLER : MATCH_RESULT_STATE.PLAYER2PREKILLER;
 			break;
 			default : 
-			 state = MATCH_RESULT_STATE.UNDEFINED;
+			 resultState = MATCH_RESULT_STATE.UNDEFINED;
 			break;
 		}
-		GameHelper.Trace("Match result state: " + state.name());
-		return state;
+		
+		return resultState;
 	}
 }

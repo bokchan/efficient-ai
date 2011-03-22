@@ -2,9 +2,11 @@
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class GameState{
+	
 	int turn =-1;
 	Integer hashCode;
 	byte[][] state;
@@ -22,7 +24,7 @@ public class GameState{
 		children = new ArrayList<Integer>();
 	}
 
-	@Override
+	
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("GameState [turn=").append(turn)
@@ -108,5 +110,17 @@ public class GameState{
 		}
 		return sb.toString();
 	}
+}
 
+class MinComparator implements Comparator<GameState> {
+	public int compare(GameState o1, GameState o2) {
+		int c= o1.utilityMin.compareTo(o2.utilityMin);
+		return c==0 ? 0 : c > 0 ? -1 : 1; 
+	}
+}
+
+class MaxComparator implements Comparator<GameState> {
+	public int compare(GameState o1, GameState o2) {
+		return o1.utilityMax.compareTo(o2.utilityMax);
+	}
 }

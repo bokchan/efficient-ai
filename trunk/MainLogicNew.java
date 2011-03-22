@@ -31,22 +31,21 @@ public class MainLogicNew implements IGameLogic {
     }
 
     public void insertCoin(int column, int playerID) {
-    	GameHelper.Trace("Insert coin called: (" + column +"," + playerID + ")" );
+    	
     	heuristics.updateCurrentState(column, playerID);
     }
 
     public int decideNextMove() {
-    	GameHelper.Trace("Deciding move");
+    	GameHelper.Trace(false,"Deciding move");
     	long t1 = System.nanoTime();
     	int move = heuristics.evaluateGameState(); 
-    	GameHelper.Trace("Move: "  + move);
-    	GameHelper.Trace("Time: "  + (System.nanoTime()-t1)/100000);
+    	GameHelper.Trace(false,"Time: "  + (System.nanoTime()-t1)/100000);
     	return move; 
     }
 
     public Winner gameFinished() {
     	Winner w = heuristics.getWinner();
-    	GameHelper.Trace("Game status: " + w);
+    	GameHelper.Trace(false,"Game status: " + w);
     	return w;
     }
 
