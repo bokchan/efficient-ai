@@ -179,8 +179,8 @@ public class RegexTester
 		 String s6 = "000022000001000000000001000001000002000000";
 		 
 		 
-		 RegexResult result = heuristics.matchKillerMoves(s1, 1);
-		 Assert.assertEquals(1, result.matchStartIdx);		 
+//		 RegexResult result = heuristics.matchKillerMoves(s1, 1);
+//		 Assert.assertEquals(1, result.matchStartIdx);		 
 	}
 
 	
@@ -199,10 +199,14 @@ public class RegexTester
 		
 			
 		GameState g = new GameState(boardState);
-		GameHelper.Trace(g.stateAsString());
+		GameHelper.Trace(false, g.stateAsString());
 		GameState g2 = g.createGamestate(2, 3);
-		GameHelper.Trace(g2.stateAsString());
+		GameHelper.Trace(false, g2.stateAsString());
 		
-		Assert.assertEquals(1, g.compareTo(g2));		
+				
+	}
+	@Test
+	public void test() {
+		System.out.println(!(1==1));
 	}
 }

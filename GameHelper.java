@@ -1,5 +1,7 @@
 
-public class GameHelper {
+public class GameHelper {	
+	private static boolean trace = true;
+	private static boolean debugmode = false;
 
 	//	/***
 	//	 * Converts an int[] to a int[][]  
@@ -60,7 +62,16 @@ public class GameHelper {
 		return ba2;
 	}
 
-	public static void Trace(String s) {
-		System.out.println("Trace: " + s);
+	public static void Trace(boolean isDebug, String s) {
+		if (trace)
+		{
+			if (debugmode) 
+			{
+				System.out.println("Trace: " + s + "\n");
+			} else if (!isDebug)
+			{
+				System.out.println("Trace: " + s + "\n");
+			}
+		}		
 	}
 }
