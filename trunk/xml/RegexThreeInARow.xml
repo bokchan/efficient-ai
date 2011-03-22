@@ -7,7 +7,18 @@
     <offsetX>0</offsetX>
     <modMin>0</modMin>
     <modMax>6</modMax>    
-  </expression>  
+  </expression>
+  <expression enabled="true">
+  	xxx1110
+  	xxxxxx0
+  	<description>Horisontal 1110 </description>
+    <pattern>[^0]...P{3}0{1,}</pattern>
+    <offsetY>0</offsetY>
+    <offsetX>0</offsetX>
+    <modMin>3</modMin>
+    <modMax>6</modMax>
+  </expression>
+  
   <expression enabled="true">
   	<description>Horisontal 1110</description>
     <pattern>P{3}0{1,}</pattern>
@@ -18,7 +29,7 @@
   </expression>
   <expression enabled="true">
   	<description>Horisontal 0111</description>
-    <pattern>0P{3}</pattern>
+    <pattern>0P{3}[^0]*</pattern>
     <offsetY>0</offsetY>
     <offsetX>0</offsetX>
     <modMin>0</modMin>
