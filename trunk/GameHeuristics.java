@@ -60,17 +60,19 @@ public class GameHeuristics {
 	private Frontier frontier;
 	private Queue<GameState> exploredCleanupList;
 	private SubGoals subgoals; 
-	private int cutOff = 5;
+	private int cutOff = 6;
 	private enum GAMETYPE {MIN, MAX}; 
 
 	private RegexEvaluation threeInARow = new RegexEvaluation("RegexThreeInARow.xml", RegexEvaluation.MATCH_TYPE.THREE_IN_A_ROW);
-	private RegexEvaluation killermoves = new RegexEvaluation("RegexKillerMovesMinimal.xml", RegexEvaluation.MATCH_TYPE.KILLER_MOVE);
+	private RegexEvaluation killermoves = new RegexEvaluation("RegexKillerMovesDESC.xml", RegexEvaluation.MATCH_TYPE.KILLER_MOVE);
 	private RegexEvaluation fourInARow = new RegexEvaluation("RegexFourInARow.xml",RegexEvaluation.MATCH_TYPE.FOUR_IN_A_ROW);
 	private RegexEvaluation basicMoves = new RegexEvaluation("RegexBasicMoves.xml",RegexEvaluation.MATCH_TYPE.BASIC);
 
 	private GameState current;
 	private GameState next;
 	private GAMETYPE type;
+	
+	private int subgoalCutoff = 5;    
 
 	private int count = 0; 
 
@@ -88,7 +90,6 @@ public class GameHeuristics {
 		subgoals = (getPlayerID() == 1) ? new SubGoals(SubGoals.TYPE.MINGOALS) : new SubGoals(SubGoals.TYPE.MAXGOALS);
 		updateCurrentState(new GameState(new byte[rows][cols]));
 	}
-
 	/***
 	 * 
 	 * Function that receives an explored board state isOpponent
@@ -132,7 +133,7 @@ public class GameHeuristics {
 				"\nSubgoals: " + subgoals.set.size());
 		
 		// There is a limit on the size of the frontier
-		if (gamestate != null && (frontier.size() + explored.size()) < Math.pow(7, 5))
+		if (gamestate != null && (frontier.size() + explored.size()) < Math.pow(7, 6))
 		{   
 			// Add state to explored
 			explored.put(gamestate.hashCode, gamestate);
@@ -150,18 +151,19 @@ public class GameHeuristics {
 						GameState newGS  = gamestate.createGamestate(col, player);
 						// Add as child and add to the gamestate
 						gamestate.addToChildren(newGS);
-						boolean contains = frontier.containsKey(newGS.hashCode);
+						boolean notContained = !(frontier.containsKey(newGS.hashCode) || explored.containsKey(newGS.hashCode));
 						
 						// Don't add already added states and cutoff if the gamestate exceeds our cutoff
 						// 6 - 1 = 5
 						GameHelper.Trace(false, "Depth: cur " + current.depth + "poten; "  + newGS.depth);
 						
-						if (!contains && (newGS.depth - current.depth) < cutOff) {
+						if (notContained && (newGS.depth - current.depth) < cutOff) {
 							
 							addGameStateToFrontier(newGS);
 							// Assign utility
 							GameHelper.Trace(true, "Before assignutility" + newGS.toString());
 							if (assignUtility(newGS)) {
+								
 								// Add to subgoals if the state.turn == opponent.  
 								if (player == getOpponentPlayerID()) addGameStateToSubgoals(newGS);
 							}
@@ -179,6 +181,7 @@ public class GameHeuristics {
 					}					
 				}
 			}
+			if (subgoals.set.size() >subgoalCutoff ) decideMove();
 			// call exploregamestate again, going depth first;
 			exploreBoardGameState(player);
 		} else {
@@ -189,12 +192,14 @@ public class GameHeuristics {
 
 			// Of the explored states get the one with the best minmax, then search backwards to child of current
 			
-			next = getNextByParent(subgoals.getSubGoal());
+			decideMove();
 			
 		}
 	}
-
-
+	
+	private void decideMove() {
+		next = getNextByParent(subgoals.getSubGoal());
+	}
 
 	private boolean MINMAX(GameState gs) {
 		// The gamestate is a draw
@@ -241,6 +246,8 @@ public class GameHeuristics {
 	 */
 	private boolean assignUtility(GameState state) 
 	{
+		//TODO: ASSIGN 0-0 = 0, MATCH(^ownturn) = MID 
+		
 		// Get state as string
 		String strState = state.stateAsString();
 		/***

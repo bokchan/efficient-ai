@@ -15,9 +15,6 @@ public class Frontier extends HashMap<Integer, GameState> {
 
 		order.add(key);
 		return super.put(key, value);
-
-
-
 	} 
 
 	@Override
@@ -26,7 +23,7 @@ public class Frontier extends HashMap<Integer, GameState> {
 		return super.remove(key);
 	}
 
-	public GameState poll() throws Exception {
+	public GameState poll(){
 		if (order.size() > 0) { 
 		
 		int hash = order.get(0);	
