@@ -56,7 +56,7 @@ public class RegexEvaluation {
 				 * 0123456
 				 */
 				if (matcher.start() % cols >= r.getModMin() && matcher.start() % cols <= r.getModMax()) {
-					GameHelper.Trace(true, "Matchtype in regex: " + matchtype.name());
+					//GameHelper.Trace(true, "Matchtype in regex: " + matchtype.name());
 					return new RegexResult(matcher.start(), r.getOffsetY(), r.getOffsetX(),getMatchResultState(playerid), playerid);
 				}
 			}
@@ -65,7 +65,7 @@ public class RegexEvaluation {
 	}
 
 	private void loadRegularExpressions(String filename) {
-		GameHelper.Trace(false, "Loading regex patterns");
+		//GameHelper.Trace(false, "Loading regex patterns");
 		String dir = System.getProperty("user.dir") + System.getProperty("file.separator") + "trunk" +System.getProperty("file.separator") + "xml" + System.getProperty("file.separator");
 		System.out.println(dir);
 		File file = new File("C:\\Users\\Andreas\\workspace\\Efficient AI 2\\trunk\\xml\\" + filename);

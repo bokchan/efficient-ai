@@ -67,10 +67,10 @@ public class GameHelper {
 		{
 			if (debugmode) 
 			{
-				System.out.println("Trace: " + s + "\n");
+				System.out.println("Trace: " + s + System.getProperty("line.separator"));
 			} else if (!isDebug)
 			{
-				System.out.println("Trace: " + s + "\n");
+				System.out.println("Trace: " + s + System.getProperty("line.separator"));
 			}
 		}		
 	}

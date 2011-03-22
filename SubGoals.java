@@ -10,13 +10,14 @@ public class SubGoals {
 	public static enum TYPE {MINGOALS, MAXGOALS}
 	private TYPE type;
 	private GameState current;
+
 	SortedSet<GameState> set;
 	MinComparator cMin = new MinComparator();
 	MaxComparator cMax = new MaxComparator();
 
 	public SubGoals(TYPE type) {
 		this.type = type;
-		
+
 		if (type.equals(TYPE.MINGOALS))
 			set = new TreeSet<GameState>(cMin);
 		else 
@@ -32,7 +33,7 @@ public class SubGoals {
 				set.add(e);
 			}
 		} else {
-			set.add(e);
+			if ((e.utilityMin != e.utilityMax)) set.add(e );
 		}
 		if (set.size() > maxSize) remove();
 	}
@@ -44,10 +45,9 @@ public class SubGoals {
 	 */
 	public boolean compare(GameState e) {
 		if (type.equals(TYPE.MINGOALS)) {
-			return cMin.compare(e, set.first()) > 0;
+			return cMin.compare(e, set.last()) > 0;
 		}else {
-			boolean c = cMax.compare(e,set.first()) > 0;
-			return c;
+			return cMax.compare(e,set.first()) < 0;
 		}
 	}
 
@@ -72,7 +72,7 @@ public class SubGoals {
 				else goal.utilityMax+=2;
 
 			}
-			
+
 			tmp = null;
 		}
 	}
