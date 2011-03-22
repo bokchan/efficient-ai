@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <expressions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="RegexExpression.xsd">
-    <expression>
+	
+    <expression enabled="true">
         <description>xx1010x1110x0x</description>
-        <pattern>VAR0VAR0.VARVARVAR0.0</pattern>
+        <pattern>P0P0.PPP0.0</pattern>
         <offsetY>0</offsetY>
         <offsetX>1</offsetX>
         <modMin>3</modMin>
@@ -10,7 +11,7 @@
     </expression>
     <expression>
         <description>x0101xxx0x0111</description>
-        <pattern>0VAR0VAR...0.0VARVARVAR</pattern>
+        <pattern>0P0P...0.0PPP</pattern>
         <offsetY>0</offsetY>
         <offsetX>0</offsetX>
         <modMin>0</modMin>
@@ -18,7 +19,7 @@
     </expression>
     <expression>
         <description>1xxxxxxx1xxxxx1100xxxxx00xxx</description>
-        <pattern>VAR[0-2]{7}VAR[0-2]{5}VARVAR00[0-2]{5}00</pattern>
+        <pattern>P[0-2]{7}P[0-2]{5}PP00[0-2]{5}00</pattern>
         <offsetY>2</offsetY>
         <offsetX>2</offsetX>
         <modMin>0</modMin>
@@ -26,7 +27,7 @@
     </expression>
     <expression>
         <description>xxxxxx1xxxxx1xxxx0011xxx00xx</description>
-        <pattern>VAR[0-2]{5}VAR[0-2]{4}00VARVAR[0-2]{3}00</pattern>
+        <pattern>P[0-2]{5}P[0-2]{4}00PP[0-2]{3}00</pattern>
         <offsetY>2</offsetY>
         <offsetX>-2</offsetX>
         <modMin>3</modMin>
@@ -34,7 +35,7 @@
     </expression>
     <expression>
         <description>xxx1100xx11100xxxxx00</description>
-        <pattern>VARVAR00..VARVARVAR00[0-2]{5}00</pattern>
+        <pattern>PP00..PPP00[0-2]{5}00</pattern>
         <offsetY>0</offsetY>
         <offsetX>2</offsetX>
         <modMin>1</modMin>
@@ -42,7 +43,7 @@
     </expression>
     <expression>
         <description>0011xxx00111xx00xxxxx</description>
-        <pattern>00VARVAR[0-2]{3}00VARVARVAR..00</pattern>
+        <pattern>00PP[0-2]{3}00PPP..00</pattern>
         <offsetY>0</offsetY>
         <offsetX>1</offsetX>
         <modMin>0</modMin>
@@ -50,7 +51,7 @@
     </expression>
     <expression>
         <description>xx1010xx11010x</description>
-        <pattern>VAR0VAR0..VARVAR0VAR0</pattern>
+        <pattern>P0P0..PP0P0</pattern>
         <offsetY>0</offsetY>
         <offsetX>1</offsetX>
         <modMin>1</modMin>
@@ -58,7 +59,7 @@
     </expression>
     <expression>
         <description>x0101xxx01011x</description>
-        <pattern>0VAR0VAR...0VAR0VARVAR</pattern>
+        <pattern>0P0P...0P0PP</pattern>
         <offsetY>0</offsetY>
         <offsetX>0</offsetX>
         <modMin>0</modMin>
@@ -66,7 +67,7 @@
     </expression>
     <expression>
         <description>1x0xxxx1101xxxxx0xxxxxx01xxx</description>
-        <pattern>VAR.0[0-2]{4}VARVAR0VAR[0-2]{5}0[0-2]{6}0VAR</pattern>
+        <pattern>P.0[0-2]{4}PP0P[0-2]{5}0[0-2]{6}0P</pattern>
         <offsetY>0</offsetY>
         <offsetX>2</offsetX>
         <modMin>0</modMin>
@@ -74,7 +75,7 @@
     </expression>
     <expression>
         <description>xxxx0x1xxx1011xxx1011xxx01xx</description>
-        <pattern>VAR0[0-2]{6}0[0-2]{5}VAR0VARVAR[0-2]{4}0.VAR</pattern>
+        <pattern>P0[0-2]{6}0[0-2]{5}P0PP[0-2]{4}0.P</pattern>
         <offsetY>0</offsetY>
         <offsetX>-2</offsetX>
         <modMin>3</modMin>
@@ -82,7 +83,7 @@
     </expression>
     <expression>
         <description>x0110xx10110xx</description>
-        <pattern>0VARVAR0[0-2]{2}VAR0VARVAR0</pattern>
+        <pattern>0PP0[0-2]{2}P0PP0</pattern>
         <offsetY>0</offsetY>
         <offsetX>0</offsetX>
         <modMin>1</modMin>
@@ -90,7 +91,7 @@
     </expression>
     <expression>
         <description>xx0110xxx01101</description>
-        <pattern>0VARVAR0[0-2]{3}0VARVAR0VAR</pattern>
+        <pattern>0PP0[0-2]{3}0PP0P</pattern>
         <offsetY>0</offsetY>
         <offsetX>0</offsetX>
         <modMin>0</modMin>
@@ -98,7 +99,7 @@
     </expression>
     <expression>
         <description>xxx0xxxxx1011x1110xxx</description>
-        <pattern>0[0-2]{5}VAR0VARVAR.VARVARVAR0</pattern>
+        <pattern>0[0-2]{5}P0PP.PPP0</pattern>
         <offsetY>0</offsetY>
         <offsetX>0</offsetX>
         <modMin>3</modMin>
@@ -106,7 +107,7 @@
     </expression>
     <expression>
         <description>xxx0xxxx1101xxxxx0111</description>
-        <pattern>0VARVARVAR.VARVAR0VAR[0-2]{5}0</pattern>
+        <pattern>0PPP.PP0P[0-2]{5}0</pattern>
         <offsetY>0</offsetY>
         <offsetX>0</offsetX>
         <modMin>2</modMin>
@@ -114,7 +115,7 @@
     </expression>
     <expression>
         <description>1xxxxxxx1x0xxx1110xxxxxx0xxx</description>
-        <pattern>VAR[0-2]{7}VAR.0[0-2]{3}VARVARVAR0[0-2]{6}0</pattern>
+        <pattern>P[0-2]{7}P.0[0-2]{3}PPP0[0-2]{6}0</pattern>
         <offsetY>1</offsetY>
         <offsetX>3</offsetX>
         <modMin>0</modMin>
@@ -122,7 +123,7 @@
     </expression>
     <expression>
         <description>xxxxxx1xxx0x1xxxx0111xxx0xxx</description>
-        <pattern>VAR[0-2]{3}0.VAR[0-2]{4}0VARVARVAR[0-2]{3}0</pattern>
+        <pattern>P[0-2]{3}0.P[0-2]{4}0PPP[0-2]{3}0</pattern>
         <offsetY>1</offsetY>
         <offsetX>-3</offsetX>
         <modMin>3</modMin>
@@ -130,7 +131,7 @@
     </expression>
     <expression>
         <description>x1x011xxx1010x111000x</description>
-        <pattern>VAR.0VARVAR[0-2]{3}VAR0VAR0.^0VAR{2}0{3}</pattern>
+        <pattern>P.0PP[0-2]{3}P0P0.[^0]P{2}0{3}</pattern>
         <offsetY>0</offsetY>
         <offsetX>2</offsetX>
         <modMin>1</modMin>
@@ -138,7 +139,7 @@
     </expression>
     <expression>
         <description>x110x1xx0101xxx000111</description>
-        <pattern>VARVAR0.VAR..VAR0VAR...0{3}VAR{2}^0</pattern>
+        <pattern>PP0.P..P0P...0{3}P{2}[^0]</pattern>
         <offsetY>0</offsetY>
         <offsetX>2</offsetX>
         <modMin>0</modMin>
@@ -146,7 +147,7 @@
     </expression>
     <expression>
         <description>x1011xx1101xxx</description>
-        <pattern>VAR0VARVAR..VARVAR0VAR</pattern>
+        <pattern>P0PP..PP0P</pattern>
         <offsetY>0</offsetY>
         <offsetX>1</offsetX>
         <modMin>1</modMin>
@@ -154,7 +155,7 @@
     </expression>
     <expression>
         <description>xx1101xxxx1011</description>
-        <pattern>VARVAR0VAR[0-2]{4}VAR0VARVAR</pattern>
+        <pattern>PP0P[0-2]{4}P0PP</pattern>
         <offsetY>0</offsetY>
         <offsetX>2</offsetX>
         <modMin>0</modMin>
@@ -162,7 +163,7 @@
     </expression>
     <expression>
         <description>11xxxxxx0xxxxx1011xxxx0x0xxx</description>
-        <pattern>VARVAR[0-2]{6}0[0-2]{5}VAR0VARVAR[0-2]{4}0.0</pattern>
+        <pattern>PP[0-2]{6}0[0-2]{5}P0PP[0-2]{4}0.0</pattern>
         <offsetY>1</offsetY>
         <offsetX>1</offsetX>
         <modMin>0</modMin>
@@ -170,7 +171,7 @@
     </expression>
     <expression>
         <description>xxxxx11xxxxx0xxxx1101xxx0x0x</description>
-        <pattern>VARVAR[0-2]{5}0[0-2]{4}VARVAR0VAR[0-2]{3}0.0</pattern>
+        <pattern>PP[0-2]{5}0[0-2]{4}PP0P[0-2]{3}0.0</pattern>
         <offsetY>1</offsetY>
         <offsetX>-1</offsetX>
         <modMin>2</modMin>
@@ -178,7 +179,7 @@
     </expression>
     <expression>
         <description>1011xxx1011xxx</description>
-        <pattern>{VAR,}0VARVAR[0-2]{2,}VAR{VAR,}0VARVAR</pattern>
+        <pattern>{P,}0PP[0-2]{2,}P{P,}0PP</pattern>
         <offsetY>0</offsetY>
         <offsetX>1</offsetX>
         <modMin>0</modMin>
@@ -186,7 +187,7 @@
     </expression>
     <expression>
         <description>xxx1101xxx1101</description>
-        <pattern>VARVAR0VAR{VAR,}[0-2]{2,}VARVAR0VAR</pattern>
+        <pattern>PP0P{P,}[0-2]{2,}PP0P</pattern>
         <offsetY>0</offsetY>
         <offsetX>2</offsetX>
         <modMin>0</modMin>
@@ -194,7 +195,7 @@
     </expression>
     <expression>
         <description>xx0011xxx001xxxx00x1x</description>
-        <pattern>00VARVAR[0-2]{4}00VAR[0-2]{5}00.VAR</pattern>
+        <pattern>00PP[0-2]{4}00P[0-2]{5}00.P</pattern>
         <offsetY>0</offsetY>
         <offsetX>1</offsetX>
         <modMin>0</modMin>
@@ -202,7 +203,7 @@
     </expression>
     <expression>
         <description>xxx0110xx10110</description>
-        <pattern>0VARVAR0..VAR0VARVAR0</pattern>
+        <pattern>0PP0..P0PP0</pattern>
         <offsetY>0</offsetY>
         <offsetX>0</offsetX>
         <modMin>1</modMin>
@@ -210,7 +211,7 @@
     </expression>
     <expression>
         <description>xx1100xxx1x00xxxx100xxx1x00x</description>
-        <pattern>VARVAR00[0-2]{3}..00[0-2]{4}VAR00[0-2]{3}VAR.00</pattern>
+        <pattern>PP00[0-2]{3}..00[0-2]{4}P00[0-2]{3}P.00</pattern>
         <offsetY>0</offsetY>
         <offsetX>3</offsetX>
         <modMin>0</modMin>
@@ -218,7 +219,7 @@
     </expression>
     <expression>
         <description>x0011xxx00x1xxx001xxxx00x1xx</description>
-        <pattern>00VARVAR[0-2]{3}00..[0-2]{3}00VAR[0-2]{4}00.VAR</pattern>
+        <pattern>00PP[0-2]{3}00..[0-2]{3}00P[0-2]{4}00.P</pattern>
         <offsetY>0</offsetY>
         <offsetX>0</offsetX>
         <modMin>0</modMin>
@@ -226,7 +227,7 @@
     </expression>
     <expression>
         <description>xx101xxxx1011xxx1011x</description>
-        <pattern>VAR0VAR....VAR00VAR[0-2]{3}VAR0VARVAR</pattern>
+        <pattern>P0P....P00P[0-2]{3}P0PP</pattern>
         <offsetY>0</offsetY>
         <offsetX>1</offsetX>
         <modMin>0</modMin>
@@ -234,7 +235,7 @@
     </expression>
     <expression>
         <description>xx101xxx1101xxx1101xx</description>
-        <pattern>VAR0VAR...VARVAR0VAR...VARVAR0VAR</pattern>
+        <pattern>P0P...PP0P...PP0P</pattern>
         <offsetY>0</offsetY>
         <offsetX>1</offsetX>
         <modMin>1</modMin>
@@ -242,7 +243,7 @@
     </expression>
     <expression>
         <description>x0101xxx01011x</description>
-        <pattern>0VAR0VAR...0VAR0VARVAR</pattern>
+        <pattern>0P0P...0P0PP</pattern>
         <offsetY>0</offsetY>
         <offsetX>0</offsetX>
         <modMin>0</modMin>
@@ -250,7 +251,7 @@
     </expression>
     <expression>
         <description>xx1010xx11010x</description>
-        <pattern>VAR0VAR0..VARVAR0VAR0</pattern>
+        <pattern>P0P0..PP0P0</pattern>
         <offsetY>0</offsetY>
         <offsetX>1</offsetX>
         <modMin>1</modMin>
@@ -258,7 +259,7 @@
     </expression>
     <expression>
         <description>xx1101xxx1101x</description>
-        <pattern>VARVAR0VAR...VARVAR0VAR</pattern>
+        <pattern>PP0P...PP0P</pattern>
         <offsetY>0</offsetY>
         <offsetX>2</offsetX>
         <modMin>0</modMin>
@@ -266,7 +267,7 @@
     </expression>
     <expression>
         <description>x1011xxx1011xx</description>
-        <pattern>VAR0VARVAR...VAR0VARVAR</pattern>
+        <pattern>P0PP...P0PP</pattern>
         <offsetY>0</offsetY>
         <offsetX>1</offsetX>
         <modMin>0</modMin>
@@ -274,7 +275,7 @@
     </expression>
     <expression>
         <description>1xxxxxxx011xxx1011xxxx0x0xxx</description>
-        <pattern>(VAR[0-2]{7})+0VARVAR...VAR0VARVAR....0.0</pattern>
+        <pattern>(P[0-2]{7})+0PP...P0PP....0.0</pattern>
         <offsetY>1</offsetY>
         <offsetX>1</offsetX>
         <modMin>0</modMin>
@@ -282,7 +283,7 @@
     </expression>
     <expression>
         <description>xxxxxx1xxx110xxxx1101xxx0x0x</description>
-        <pattern>[0-2]{6}VAR[0-2]{3}+VARVAR0....VARVAR0VAR...0.0</pattern>
+        <pattern>[0-2]{6}P[0-2]{3}+PP0....PP0P...0.0</pattern>
         <offsetY>1</offsetY>
         <offsetX>1</offsetX>
         <modMin>3</modMin>
@@ -290,7 +291,7 @@
     </expression>
     <expression>
         <description>xxx0xxxx1101xxx1x0xxx</description>
-        <pattern>0....VARVAR0VAR...VAR.0</pattern>
+        <pattern>0....PP0P...P.0</pattern>
         <offsetY>0</offsetY>
         <offsetX>0</offsetX>
         <modMin>2</modMin>
@@ -298,7 +299,7 @@
     </expression>
     <expression>
         <description>xxx0xxxxx1011xxxx0x1x</description>
-        <pattern>0[0-2]{5}VAR0VARVAR[0-2]{4}0.VAR0</pattern>
+        <pattern>0[0-2]{5}P0PP[0-2]{4}0.P0</pattern>
         <offsetY>0</offsetY>
         <offsetX>0</offsetX>
         <modMin>1</modMin>
@@ -306,7 +307,7 @@
     </expression>
     <expression>
         <description>xxxxx1xxx0x1xxxx0111xxx0xxxx</description>
-        <pattern>VAR...0.VAR....0VARVARVAR...0</pattern>
+        <pattern>P...0.P....0PPP...0</pattern>
         <offsetY>1</offsetY>
         <offsetX>-3</offsetX>
         <modMin>3</modMin>
@@ -314,7 +315,7 @@
     </expression>
     <expression>
         <description>x1xxxxxxx1x0xxx1110xxxxxx0xx</description>
-        <pattern>VAR[0-2]{7}VAR.0...VARVARVAR0[0-2]{6}0</pattern>
+        <pattern>P[0-2]{7}P.0...PPP0[0-2]{6}0</pattern>
         <offsetY>1</offsetY>
         <offsetX>3</offsetX>
         <modMin>0</modMin>
@@ -322,7 +323,7 @@
     </expression>
     <expression>
         <description>1xxxxxx10xxxxx1011xxxx0x0xxx</description>
-        <pattern>VAR[0-2]{6}VAR0[0-2]{5}VAR0VARVAR....0.0</pattern>
+        <pattern>P[0-2]{6}P0[0-2]{5}P0PP....0.0</pattern>
         <offsetY>1</offsetY>
         <offsetX>1</offsetX>
         <modMin>0</modMin>
@@ -330,7 +331,7 @@
     </expression>
     <expression>
         <description>xxxxxx1xxxxx01xxx1101xxx0x0x</description>
-        <pattern>VAR[0-2]{5}0VAR...VARVAR0VAR...0.0</pattern>
+        <pattern>P[0-2]{5}0P...PP0P...0.0</pattern>
         <offsetY>1</offsetY>
         <offsetX>1</offsetX>
         <modMin>3</modMin>
@@ -338,7 +339,7 @@
     </expression>
     <expression>
         <description>1101xxxxx0xxxxx10xxxx0x0xxxx</description>
-        <pattern>VARVAR0VAR[0-2]{5}0[0-2]{5}VAR0[0-2]{4}0.0</pattern>
+        <pattern>PP0P[0-2]{5}0[0-2]{5}P0[0-2]{4}0.0</pattern>
         <offsetY>0</offsetY>
         <offsetX>2</offsetX>
         <modMin>0</modMin>
@@ -346,7 +347,7 @@
     </expression>
     <expression>
         <description>xxx1011xxxx0xxxxxx01xxxxx0x0</description>
-        <pattern>VAR0VARVAR[0-2]{4}0[0-2]{6}0VAR[0-2]{5}0.0</pattern>
+        <pattern>P0PP[0-2]{4}0[0-2]{6}0P[0-2]{5}0.0</pattern>
         <offsetY>0</offsetY>
         <offsetX>1</offsetX>
         <modMin>0</modMin>
@@ -354,7 +355,7 @@
     </expression>
     <expression>
         <description>xxx1xxxxx1xxxx0011xxx</description>
-        <pattern>VAR[0-2]{5}VAR[0-2]{4}00VARVAR</pattern>
+        <pattern>P[0-2]{5}P[0-2]{4}00PP</pattern>
         <offsetY>2</offsetY>
         <offsetX>-2</offsetX>
         <modMin>3</modMin>
@@ -362,7 +363,7 @@
     </expression>
     <expression>
         <description>xxx1xxxxxxx1xxxxx1100</description>
-        <pattern>VARVAR[0-2]{6}VAR[0-2]{5}VARVAR00</pattern>
+        <pattern>PP[0-2]{6}P[0-2]{5}PP00</pattern>
         <offsetY>2</offsetY>
         <offsetX>2</offsetX>
         <modMin>0</modMin>
@@ -370,7 +371,7 @@
     </expression>
     <expression>
         <description>x1001xxxx00xxxx100xxx1x00xxx</description>
-        <pattern>VAR00VAR[0-2]{4}00[0-2]{4}VAR00[0-2]{3}VAR.00</pattern>
+        <pattern>P00P[0-2]{4}00[0-2]{4}P00[0-2]{3}P.00</pattern>
         <offsetY>0</offsetY>
         <offsetX>2</offsetX>
         <modMin>1</modMin>
@@ -378,7 +379,7 @@
     </expression>
     <expression>
         <description>xx1001xxxx00xxxxx001xxxx00x1</description>
-        <pattern>VAR00VAR[0-2]{4}00[0-2]{5}00VAR[0-2]{4}00.VAR</pattern>
+        <pattern>P00P[0-2]{4}00[0-2]{5}00P[0-2]{4}00.P</pattern>
         <offsetY>0</offsetY>
         <offsetX>1</offsetX>
         <modMin>0</modMin>
@@ -386,7 +387,7 @@
     </expression>
     <expression>
         <description>xx1x1xxxx10xxxxx00xxx</description>
-        <pattern>VAR.0[0-2]{4}VAR0[0-2]{5}00</pattern>
+        <pattern>P.0[0-2]{4}P0[0-2]{5}00</pattern>
         <offsetY>1</offsetY>
         <offsetX>1</offsetX>
         <modMin>1</modMin>
@@ -394,7 +395,7 @@
     </expression>
     <expression>
         <description>xx1x1xxxxx01xxxxx00xx</description>
-        <pattern>VAR.VAR[0-2]{5}0VAR[0-2]{5}00</pattern>
+        <pattern>P.P[0-2]{5}0P[0-2]{5}00</pattern>
         <offsetY>1</offsetY>
         <offsetX>1</offsetX>
         <modMin>0</modMin>
@@ -402,7 +403,7 @@
     </expression>
     <expression>
         <description>x0011xxx001xxxx00x1xx</description>
-        <pattern>00VARVAR[0-2]{3}00VAR[0-2]{4}00.VAR</pattern>
+        <pattern>00PP[0-2]{3}00P[0-2]{4}00.P</pattern>
         <offsetY>0</offsetY>
         <offsetX>1</offsetX>
         <modMin>0</modMin>
@@ -410,7 +411,7 @@
     </expression>
     <expression>
         <description>xx120xxxx110xx</description>
-        <pattern>VAR[^0]0[0-2]{4}VARVAR0[0-2]</pattern>
+        <pattern>P[^0]0[0-2]{4}PP0[0-2]</pattern>
         <offsetY>0</offsetY>
         <offsetX>2</offsetX>
         <modMin>1</modMin>
@@ -418,7 +419,7 @@
     </expression>
     <expression>
         <description>1xxxxxxx1xxxxx1100xxxxx00xxx</description>
-        <pattern>VAR[0-2]{7}VAR[0-2]{5}VARVAR00[0-2]{4}</pattern>
+        <pattern>P[0-2]{7}P[0-2]{5}PP00[0-2]{4}</pattern>
         <offsetY>2</offsetY>
         <offsetX>2</offsetX>
         <modMin>0</modMin>
@@ -426,7 +427,7 @@
     </expression>
     <expression>
         <description>xxxxxx1xxxxx1xxxx0011xxx00xx</description>
-        <pattern>VAR[0-2]{5}VAR[0-2]{4}00VARVAR</pattern>
+        <pattern>P[0-2]{5}P[0-2]{4}00PP</pattern>
         <offsetY>2</offsetY>
         <offsetX>-2</offsetX>
         <modMin>3</modMin>
@@ -434,7 +435,7 @@
     </expression>
     <expression>
         <description>x1100xx11100xx</description>
-        <pattern>VARVAR00..VARVARVAR</pattern>
+        <pattern>PP00..PPP</pattern>
         <offsetY>0</offsetY>
         <offsetX>2</offsetX>
         <modMin>1</modMin>
@@ -442,7 +443,7 @@
     </expression>
     <expression>
         <description>xx0011xxx00111</description>
-        <pattern>VARVAR...00VARVARVAR</pattern>
+        <pattern>PP...00PPP</pattern>
         <offsetY>0</offsetY>
         <offsetX>1</offsetX>
         <modMin>0</modMin>
@@ -450,7 +451,7 @@
     </expression>
     <expression>
         <description>1x0xxxx1101xxxxx0xxxxxx01xxx</description>
-        <pattern>VAR.0....VARVAR0VAR.....0......0VAR</pattern>
+        <pattern>P.0....PP0P.....0......0P</pattern>
         <offsetY>0</offsetY>
         <offsetX>2</offsetX>
         <modMin>0</modMin>
@@ -458,7 +459,7 @@
     </expression>
     <expression>
         <description>xxxx0x1xxx1011xxxx0xxxxx01xx</description>
-        <pattern>0.VAR...VAR0VARVAR....0.....0VAR</pattern>
+        <pattern>0.P...P0PP....0.....0P</pattern>
         <offsetY>0</offsetY>
         <offsetX>0</offsetX>
         <modMin>1</modMin>
@@ -466,7 +467,7 @@
     </expression>
     <expression>
         <description>x0xxxxx1011xxx1011xxx</description>
-        <pattern>0.....VAR0VARVAR...VAR0VARVAR</pattern>
+        <pattern>0.....P0PP...P0PP</pattern>
         <offsetY>0</offsetY>
         <offsetX>0</offsetX>
         <modMin>1</modMin>
@@ -474,7 +475,7 @@
     </expression>
     <expression>
         <description>xxxxx0xxxx1101xxx1101</description>
-        <pattern>0....VARVAR0VAR...VARVAR0VAR</pattern>
+        <pattern>0....PP0P...PP0P</pattern>
         <offsetY>0</offsetY>
         <offsetX>0</offsetX>
         <modMin>2</modMin>
@@ -482,7 +483,7 @@
     </expression>
     <expression>
         <description>1xxxxxxx1x0xxx1110xxxxxx0xxx</description>
-        <pattern>VAR.......VAR.0...VARVARVAR0</pattern>
+        <pattern>P.......P.0...PPP0</pattern>
         <offsetY>1</offsetY>
         <offsetX>3</offsetX>
         <modMin>0</modMin>
@@ -490,7 +491,7 @@
     </expression>
     <expression>
         <description>xxxxxx1xxx0x1xxxx0111xxx0xxx</description>
-        <pattern>VAR...0.VAR....0VARVARVAR</pattern>
+        <pattern>P...0.P....0PPP</pattern>
         <offsetY>1</offsetY>
         <offsetX>-3</offsetX>
         <modMin>3</modMin>
@@ -498,7 +499,7 @@
     </expression>
     <expression>
         <description>x1011xx1101xxx</description>
-        <pattern>VAR0VARVAR..VARVAR0VAR</pattern>
+        <pattern>P0PP..PP0P</pattern>
         <offsetY>0</offsetY>
         <offsetX>1</offsetX>
         <modMin>1</modMin>
@@ -506,7 +507,7 @@
     </expression>
     <expression>
         <description>xx1101xxxx1011</description>
-        <pattern>VARVAR0VAR....VAR0VARVAR</pattern>
+        <pattern>PP0P....P0PP</pattern>
         <offsetY>0</offsetY>
         <offsetX>2</offsetX>
         <modMin>0</modMin>
@@ -514,7 +515,7 @@
     </expression>
     <expression>
         <description>xxxxx1xxxxxx1xxxx1100</description>
-        <pattern>VAR......VAR....VARVAR00</pattern>
+        <pattern>P......P....PP00</pattern>
         <offsetY>2</offsetY>
         <offsetX>0</offsetX>
         <modMin>2</modMin>
@@ -522,10 +523,37 @@
     </expression>
     <expression>
         <description>x1xxxxxx1xxxxx0011xxx</description>
-        <pattern>VAR......VAR.....00VARVAR</pattern>
+        <pattern>P......P.....00PP</pattern>
         <offsetY>2</offsetY>
         <offsetX>0</offsetX>
         <modMin>1</modMin>
         <modMax>4</modMax>
+    </expression>
+	
+	<expression>
+        <description>(1[^0]{2}1[0-2]{3}){2}0100</description>
+        <pattern>(P[^0]{2}P[0-2]{3}){2}0P00</pattern>
+        <offsetY>2</offsetY>
+        <offsetX>0</offsetX>
+        <modMin>0</modMin>
+        <modMax>3</modMax>
+    </expression>
+	
+	
+	<expression>
+        <description>PP00[0-2]{4}P00[0-2]{3}P.00</description>
+        <pattern>PP00[0-2]{4}P00[0-2]{3}P.00</pattern>
+        <offsetY>0</offsetY>
+        <offsetX>2</offsetX>
+        <modMin>1</modMin>
+        <modMax>3</modMax>
+    </expression>
+	<expression>
+        <description>00PP[0-2]{3}00P[0-2]{4}00.P</description>
+        <pattern>00PP[0-2]{3}00P[0-2]{4}00.P</pattern>
+        <offsetY>0</offsetY>
+        <offsetX>1</offsetX>
+        <modMin>0</modMin>
+        <modMax>2</modMax>
     </expression>
 </expressions>

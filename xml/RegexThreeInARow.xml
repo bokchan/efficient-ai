@@ -2,7 +2,7 @@
 <expressions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="RegexExpression.xsd">
   <expression enabled="true">
   	<description>Vertical</description>
-    <pattern>(VAR[0-2]{6}){3}</pattern>
+    <pattern>(P[0-2]{6}){3}0</pattern>
     <offsetY>3</offsetY>
     <offsetX>0</offsetX>
     <modMin>0</modMin>
@@ -10,7 +10,7 @@
   </expression>  
   <expression enabled="true">
   	<description>Horisontal 1110</description>
-    <pattern>VAR{3}0{1,}</pattern>
+    <pattern>P{3}0{1,}</pattern>
     <offsetY>0</offsetY>
     <offsetX>3</offsetX>
     <modMin>0</modMin>
@@ -18,7 +18,7 @@
   </expression>
   <expression enabled="true">
   	<description>Horisontal 0111</description>
-    <pattern>0VAR{3}</pattern>
+    <pattern>0P{3}</pattern>
     <offsetY>0</offsetY>
     <offsetX>0</offsetX>
     <modMin>0</modMin>
@@ -26,7 +26,7 @@
   </expression>
   <expression enabled="true">
   	<description>Horisontal 1101</description>
-    <pattern>VARVAR0VAR</pattern>
+    <pattern>PP0P</pattern>
     <offsetY>0</offsetY>
     <offsetX>2</offsetX>
     <modMin>0</modMin>
@@ -34,7 +34,7 @@
   </expression>
   <expression enabled="true">
   	<description>Horisontal 1011</description>
-    <pattern>VAR0VARVAR</pattern>
+    <pattern>P0PP</pattern>
     <offsetY>0</offsetY>
     <offsetX>1</offsetX>
     <modMin>0</modMin>
@@ -42,7 +42,7 @@
   </expression>
   <expression enabled="true">
   	<description>Diagonal increasing 1110</description>
-    <pattern>(VAR[0-2]{7}){3}0</pattern>
+    <pattern>(P[0-2]{7}){2}P[^0]</pattern>
     <offsetY>3</offsetY>
     <offsetX>3</offsetX>
     <modMin>0</modMin>
@@ -50,18 +50,26 @@
   </expression>
   
   <expression enabled="true">
+  	<description>Diagonal inscreasing1 0111, Must precede</description>
+    <pattern>[^0][0-2]{7}0[0-2]{7}(P[0-2]{7}){3}</pattern>
+    <offsetY>1</offsetY>
+    <offsetX>0</offsetX>
+    <modMin>3</modMin>
+    <modMax>6</modMax>
+  </expression>
+  
+  <expression enabled="true">
   	<description>Diagonal increasing 0111</description>
-    <pattern>0[0-2]{7}(VAR[0-2]{7}){3}</pattern>
+    <pattern>0[0-2]{7}(P[0-2]{7}){3}</pattern>
     <offsetY>0</offsetY>
     <offsetX>0</offsetX>
     <modMin>0</modMin>
     <modMax>3</modMax>
-    
   </expression>
   
   <expression enabled="true">
   	<description>Diagonal increasing 1101</description>
-    <pattern>(VAR[0-2]{7}){2}0[0-2]{7}VAR</pattern>
+    <pattern>P[0-2]{7}P[^0][0-2]{6}0[0-2]{7}P</pattern>
     <offsetY>2</offsetY>
     <offsetX>2</offsetX>
     <modMin>0</modMin>
@@ -70,7 +78,7 @@
   
   <expression enabled="true">
   	<description>Diagonal increasing 1011</description>
-    <pattern>(VAR[0-2]{7})0[0-2]{7}VAR[0-2]{7}VAR</pattern>
+    <pattern>(P[^0][0-2]{6})0[0-2]{7}P[0-2]{7}P</pattern>
     <offsetY>1</offsetY>
     <offsetX>1</offsetX>
     <modMin>0</modMin>
@@ -79,16 +87,25 @@
   
 <expression enabled="true">
   	<description>Diagonal descreasing 1110</description>
-    <pattern>(VAR[0-2]{5}){3}0</pattern>
+    <pattern>P[0-2]{5}P[0-2]{4}[^0]P</pattern>
     <offsetY>3</offsetY>
     <offsetX>-3</offsetX>
     <modMin>3</modMin>
     <modMax>6</modMax>
   </expression>
-  
+    
+	<expression enabled="true">
+  	<description>Diagonal descreasing1 0111, Must precede </description>
+    <pattern>[^0][0-2]{6}0[0-2]{5}(P[0-2]{5}){3}</pattern>
+    <offsetY>0</offsetY>
+    <offsetX>0</offsetX>
+    <modMin>3</modMin>
+    <modMax>6</modMax>
+  </expression>
+	
   <expression enabled="true">
-  	<description>Diagonal descreasing 0111</description>
-    <pattern>0[0-2]{5}(VAR[0-2]{5}){3}</pattern>
+  	<description>Diagonal descreasing2 0111</description>
+    <pattern>0([0-2]{5}P){3}</pattern>
     <offsetY>0</offsetY>
     <offsetX>0</offsetX>
     <modMin>3</modMin>
@@ -96,18 +113,27 @@
   </expression>
 <expression enabled="true">
   	<description>Diagonal descreasing 1011</description>
-    <pattern>VAR[0-2]{5}0[0-2]{5}VAR[0-2]{5}1</pattern>
+    <pattern>[^0]P[0-2]{5}0[0-2]{5}P[0-2]{5}1</pattern>
     <offsetY>1</offsetY>
-    <offsetX>-1</offsetX>
+    <offsetX>0</offsetX>
     <modMin>3</modMin>
     <modMax>6</modMax>
   </expression>
   <expression enabled="true">
   	<description>Diagonal descreasing 1101</description>
-    <pattern>(VAR[0-2]{5}){2}0[0-2]{5}VAR</pattern>
+    <pattern>(P[0-2]{4})[^0]P[0-2]{5}{2}0[0-2]{5}P</pattern>
     <offsetY>2</offsetY>
     <offsetX>-2</offsetX>
     <modMin>3</modMin>
     <modMax>6</modMax>
-  </expression>    
+  </expression>
+  
+  <expression>
+        <description>(1[^0]{2}1[0-2]{3}){2}0100</description>
+        <pattern>(P[^0]{2}P[0-2]{3}){2}0P00</pattern>
+        <offsetY>2</offsetY>
+        <offsetX>0</offsetX>
+        <modMin>0</modMin>
+        <modMax>3</modMax>
+    </expression>    
 </expressions>
