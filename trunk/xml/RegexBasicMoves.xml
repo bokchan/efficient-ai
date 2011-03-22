@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<expressions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="RegexExpression.xsd">
+  <expression>
+        <description>0110</description>
+        <pattern>0PP0</pattern>
+        <offsetY>0</offsetY>
+        <offsetX>0</offsetX>
+        <modMin>0</modMin>
+        <modMax>4</modMax>
+    </expression>
+	<expression>
+        <description>1010...|.0.0</description>
+        <pattern>P0P0....0.0</pattern>
+        <offsetY>0</offsetY>
+        <offsetX>1</offsetX>
+        <modMin>0</modMin>
+        <modMax>3</modMax>
+    </expression>
+    
+	<expression>
+		<description>...11.0|...1100|...00</description>
+		<pattern>PP.0...PP00...00</pattern>
+		<offsetY>2</offsetY>
+		<offsetX>0</offsetX>
+		<modMin>0</modMin>
+		<modMax>3</modMax>
+	</expression>
+	<expression>
+		<description>0.11...0011..00</description>
+		<pattern>0.PP...00PP..00</pattern>
+		<offsetY>2</offsetY>
+		<offsetX>3</offsetX>
+		<modMin>0</modMin>
+		<modMax>3</modMax>
+	</expression>
+	<expression>
+		<description>11.0...1100...10</description>
+		<pattern>PP.0...PP00...P0</pattern>
+		<offsetY>2</offsetY>
+		<offsetX>1</offsetX>
+		<modMin>0</modMin>
+		<modMax>3</modMax>
+	</expression>
+	
+	<expression>
+		<description>0.11...0011..01</description>
+		<pattern>0.PP...00PP..0P</pattern>
+		<offsetY>2</offsetY>
+		<offsetX>2</offsetX>
+		<modMin>0</modMin>
+		<modMax>3</modMax>
+	</expression>
+	
+	<expression>
+		<description>11.0...1100...11</description>
+		<pattern>PP.0...PP00...PP</pattern>
+		<offsetY>1</offsetY>
+		<offsetX>2</offsetX>
+		<modMin>0</modMin>
+		<modMax>3</modMax>
+	</expression>
+	
+	<expression>
+		<description>0.11...0011..11</description>
+		<pattern>0.PP...00PP..PP</pattern>
+		<offsetY>1</offsetY>
+		<offsetX>1</offsetX>
+		<modMin>0</modMin>
+		<modMax>3</modMax>
+	</expression>
+	
+	<expression>
+		<description>11.0...1110...11</description>
+		<pattern>PP.0...PPP0...PP</pattern>
+		<offsetY>2</offsetY>
+		<offsetX>2</offsetX>
+		<modMin>0</modMin>
+		<modMax>3</modMax>
+	</expression>
+	
+	<expression>
+		<description>0.11...0111..11</description>
+		<pattern>0.PP...0PPP..PP</pattern>
+		<offsetY>2</offsetY>
+		<offsetX>1</offsetX>
+		<modMin>0</modMin>
+		<modMax>3</modMax>
+	</expression>
+	
+	<expression>
+		<description>11.1...1110...11</description>
+		<pattern>PP.P...PPP0...PP</pattern>
+		<offsetY>0</offsetY>
+		<offsetX>3</offsetX>
+		<modMin>0</modMin>
+		<modMax>3</modMax>
+	</expression>
+	
+	<expression>
+		<description>1.11...0111..11</description>
+		<pattern>P.PP...0PPP..PP</pattern>
+		<offsetY>0</offsetY>
+		<offsetX>0</offsetX>
+		<modMin>0</modMin>
+		<modMax>3</modMax>
+	</expression>
+	
+	<expression>
+		<description>0101...0.0011.0.00...0.001</description>
+		<pattern>0P0P...0.00PP.0.00...0.00P</pattern>
+		<offsetY>0</offsetY>
+		<offsetX>0</offsetX>
+		<modMin>0</modMin>
+		<modMax>1</modMax>
+	</expression>
+	
+	<expression>
+		<description>1010.1100.0...00.0..100.0</description>
+		<pattern>P0P0.PP00.0...00.0..P00.0</pattern>
+		<offsetY>0</offsetY>
+		<offsetX>3</offsetX>
+		<modMin>0</modMin>
+		<modMax>1</modMax>
+	</expression>
+	
+	
+	<expression>
+		<description>1101...0.0011.0.00...0.001</description>
+		<pattern>PP0P...0.00PP.0.00...0.00P</pattern>
+		<offsetY>0</offsetY>
+		<offsetX>0</offsetX>
+		<modMin>0</modMin>
+		<modMax>1</modMax>
+	</expression>
+	
+	<expression>
+		<description>1011.1100.0...00.0..100.0</description>
+		<pattern>P0PP.PP00.0...00.0..P00.0</pattern>
+		<offsetY>0</offsetY>
+		<offsetX>3</offsetX>
+		<modMin>0</modMin>
+		<modMax>1</modMax>
+	</expression>
+	
+	
+	<expression>
+		<description>1121...0.0011.0.00...0.001</description>
+		<pattern>PP[^0]P...0.00PP.0.00...0.00P</pattern>
+		<offsetY>0</offsetY>
+		<offsetX>2</offsetX>
+		<modMin>0</modMin>
+		<modMax>1</modMax>
+	</expression>
+	
+	<expression>
+		<description>1211.1100.0...00.0..100.0</description>
+		<pattern>P[^0]PP.PP00.0...00.0..P00.0</pattern>
+		<offsetY>0</offsetY>
+		<offsetX>1</offsetX>
+		<modMin>0</modMin>
+		<modMax>1</modMax>
+	</expression>
+	
+	<expression>
+		<description>1121...0.0011.0.00...0.001</description>
+		<pattern>PP[^0]P...0.00PP.0.00...0.00P</pattern>
+		<offsetY>1</offsetY>
+		<offsetX>2</offsetX>
+		<modMin>0</modMin>
+		<modMax>1</modMax>
+	</expression>
+	
+	<expression>
+		<description>MOVE 2.e 1211.1100.0...00.0..100.0</description>
+		<pattern>P[^0]PP.PP00.0...00.0..P00.0</pattern>
+		<offsetY>1</offsetY>
+		<offsetX>1</offsetX>
+		<modMin>0</modMin>
+		<modMax>1</modMax>
+	</expression>
+	
+	
+	<expression>
+		<description>MOVE 3Ra: 1[^0]1[0-2]{4}1100...0</description>
+		<pattern>P[^0]P[0-2]{4}PP00...0</pattern>
+		<offsetY>2</offsetY>
+		<offsetX>0</offsetX>
+		<modMin>0</modMin>
+		<modMax>3</modMax>
+	</expression>
+	
+	<expression>
+		<description>MOVE 3La: P^0P[0-2]{3}00PP.....0</description>
+		<pattern>P[^0]P[0-2]{3}00PP.....0</pattern>
+		<offsetY>2</offsetY>
+		<offsetX>2</offsetX>
+		<modMin>1</modMin>
+		<modMax>4</modMax>
+	</expression>
+	
+	<expression>
+		<description> MOVE 3Rb: 1[]^0]1[0-2]{4}1100...1</description>
+		<pattern>P[^0]P[0-2]{4}PP00...100</pattern>
+		<offsetY>2</offsetY>
+		<offsetX>2</offsetX>
+		<modMin>0</modMin>
+		<modMax>3</modMax>
+	</expression>
+	
+	<expression>
+		<description>MOVE 3Lb: P^0P[0-2]{3}00PP.....0</description>
+		<pattern>P[^0]P[0-2]{3}00PP...0001</pattern>
+		<offsetY>2</offsetY>
+		<offsetX>0</offsetX>
+		<modMin>1</modMin>
+		<modMax>4</modMax>
+	</expression>
+	
+	<expression>
+		<description> MOVE 3Rc: </description>
+		<pattern>P[^0]P[0-2]{4}PPP[^0]...100</pattern>
+		<offsetY>2</offsetY>
+		<offsetX>2</offsetX>
+		<modMin>0</modMin>
+		<modMax>3</modMax>
+	</expression>
+	
+	<expression>
+		<description>MOVE 3Lc: P^0P[0-2]{3}00PP.....0</description>
+		<pattern>P[^0]P[0-2]{3}00PPP..0001</pattern>
+		<offsetY>2</offsetY>
+		<offsetX>0</offsetX>
+		<modMin>1</modMin>
+		<modMax>4</modMax>
+	</expression>
+	
+	<expression>
+		<description> MOVE 3Rd: </description>
+		<pattern>P[^0]P[0-2]{4}PPP[^0]...P00.</pattern>
+		<offsetY>2</offsetY>
+		<offsetX>2</offsetX>
+		<modMin>0</modMin>
+		<modMax>3</modMax>
+	</expression>
+	
+	<expression>
+		<description>MOVE 3Ld: </description>
+		<pattern>P.P...[^0]PPP....00P</pattern>
+		<offsetY>2</offsetY>
+		<offsetX>0</offsetX>
+		<modMin>1</modMin>
+		<modMax>4</modMax>
+	</expression>
+	
+<expression>
+		<description> MOVE 3Re: </description>
+		<pattern>P[^0]P[0-2]{4}PPP[^0]...P0P.</pattern>
+		<offsetY>2</offsetY>
+		<offsetX>1</offsetX>
+		<modMin>0</modMin>
+		<modMax>3</modMax>
+	</expression>
+	
+	<expression>
+		<description>MOVE 3Le: </description>
+		<pattern>P.P...[^0]PPP....P0P</pattern>
+		<offsetY>2</offsetY>
+		<offsetX>1</offsetX>
+		<modMin>1</modMin>
+		<modMax>4</modMax>
+	</expression>		
+</expressions>

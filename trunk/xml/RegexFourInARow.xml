@@ -2,7 +2,7 @@
 <expressions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="RegexExpression.xsd">
   <expression>
     <description>Vertical</description>
-    <pattern>(VAR{1}[0-2]{6}){4}</pattern>
+    <pattern>(P{1}[0-2]{6}){4}</pattern>
     <offsetY>4</offsetY>
     <offsetX>0</offsetX>
     <modMin>0</modMin>
@@ -10,7 +10,7 @@
   </expression>
   <expression>
     <description>Horizontal</description>
-    <pattern>VAR{4}</pattern>
+    <pattern>P{4}</pattern>
     <offsetY>0</offsetY>
     <offsetX>0</offsetX>
     <modMin>0</modMin>
@@ -18,7 +18,7 @@
   </expression>
     <expression>
     <description>Diagonal increasing</description>
-    <pattern>(VAR{1}[0-2]{7}){4,}</pattern>
+    <pattern>(P{1}[0-2]{7}){4,}</pattern>
     <offsetY>4</offsetY>
     <offsetX>4</offsetX>
     <modMin>0</modMin>
@@ -26,7 +26,7 @@
   </expression>
   <expression>
     <description>Diagonal decreasing</description>
-    <pattern>(VAR{1}[0-2]{5}){4,}</pattern>
+    <pattern>(P{1}[0-2]{5}){4,}</pattern>
     <offsetY>4</offsetY>
     <offsetX>-4</offsetX>
     <modMin>3</modMin>
