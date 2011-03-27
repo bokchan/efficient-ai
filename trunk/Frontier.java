@@ -5,14 +5,13 @@ import java.util.List;
 
 public class Frontier extends HashMap<Integer, GameState> {
 	/**
-	 * 
+	 *  
 	 */
 	private static final long serialVersionUID = 1L;
 	List<Integer> order = new ArrayList<Integer>();
 
 	@Override
 	public GameState put(Integer key, GameState value) {
-
 		order.add(key);
 		return super.put(key, value);
 	} 

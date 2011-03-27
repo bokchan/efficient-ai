@@ -199,4 +199,3 @@ public class FourConnectGUI extends JComponent implements MouseListener
     public void mouseReleased(MouseEvent e){}
 
 }
-
