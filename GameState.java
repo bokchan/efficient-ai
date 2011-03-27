@@ -114,7 +114,8 @@ public class GameState{
 
 class MinComparator implements Comparator<GameState> {
 	public int compare(GameState o1, GameState o2) {
-		return o1.utilityMin.compareTo(o2.utilityMin); 
+		
+		return  o1.utilityMin.compareTo(o2.utilityMin); 
 	}
 }
 

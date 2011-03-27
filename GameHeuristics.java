@@ -3,51 +3,6 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
-/***
- * Save the gamestate in bytearray to save space.
- * In the standard 7x6 board each gamestate would occupy 7*6*32 = 1344byte  
- * With a bytearray it is 4 times less : 7*6*8 = 336byte
- * If we do explore six moves: 
- * The memore load for the byte[][] is = 336 * 7^6 = 37.6988068 MB 
- * The memore load for the int[][] is = 336 * 7^6 = 150.795227 MB
- *  
- *    
- * Solution: One byte is used to represent 3 columns fields on the board:
- * 2 bits are overhead xx  [xx000000]. Thus ie. partial gamestate below    
- * 1110011
- * 2120012
- * 1211221
- * byte1 [00011001][00100101][00011001][00010000][00100101][00011001]
- * For a full representation of a gamestate we would need 
- * 2 * 8([6 bit used 2 bits overhead])  per columns * 7 = 102 bits
- * Thus the memoryload of 7^6 gamestates would be :´´ 
- * 102 * 7^6 = 1.43053508 MB Thats freakin nice:)
- * 
- * 
- * A similar calculation for a String representation is  
- * 8 (for the String class) + 16 (for the char[]) + 42 * 2 (for the characters) + 4 (value) + 4 (offset) + 4 (count) + 4 (hash) = 124 bytes
- * 124byte * 7^6 = 13.9126549MB, about a factor 10  
- * 
- * 
- * For one most gamestates in the beginning of the game, could be an idea only to store the part of the array which is filled out
- * Works if the state is stored as an one dimensional array
- * 
- * 
- * a: Precompile
- * b: Use possessive quantifiers
- * c: (?: not grab text in groups
- * d: Avoid backtracking    
- * http://blog.stevenlevithan.com/archives/regex-optimization
- * http://www.javaworld.com/javaworld/jw-09-2007/jw-09-optimizingregex.html#resources
- * http://www.javaworld.com/javaworld/jw-09-2007/jw-09-optimizingregex.html
- * 
- *  
- *  Tested Arrays.deepHashCode on 7^6 byte[][] arrays : 50 ms, not a bottleneck
- *  Tested Arrays.deepHashCode on 7^7 byte[][] arrays : 176 ms, not a bottleneck
- *  
- * @author Andreas
- *
- */
 public class GameHeuristics {
 	private int cols = 0;
 	private int rows = 0;
@@ -60,21 +15,19 @@ public class GameHeuristics {
 	private Frontier frontier;
 	private Queue<GameState> exploredCleanupList;
 	private SubGoals subgoals; 
-	private int cutOff = 6;
+	private int cutOff = 7;
 	private enum GAMETYPE {MIN, MAX}; 
 
 	private RegexEvaluation threeInARow = new RegexEvaluation("RegexThreeInARow.xml", RegexEvaluation.MATCH_TYPE.THREE_IN_A_ROW);
-	private RegexEvaluation killermoves = new RegexEvaluation("RegexKillerMovesDESC.xml", RegexEvaluation.MATCH_TYPE.KILLER_MOVE);
+	private RegexEvaluation killermoves = new RegexEvaluation("RegexKillerMovesASC.xml", RegexEvaluation.MATCH_TYPE.KILLER_MOVE);
 	private RegexEvaluation fourInARow = new RegexEvaluation("RegexFourInARow.xml",RegexEvaluation.MATCH_TYPE.FOUR_IN_A_ROW);
 	private RegexEvaluation basicMoves = new RegexEvaluation("RegexBasicMoves.xml",RegexEvaluation.MATCH_TYPE.BASIC);
 
 	private GameState current;
 	private GameState next;
 	private GAMETYPE type;
-	
-	private int subgoalCutoff = 5;    
 
-	private int count = 0; 
+	private int subgoalCutoff = 5;    
 
 	public GameHeuristics(int cols, int rows, int playerid) {
 		this.cols = cols;
@@ -100,10 +53,10 @@ public class GameHeuristics {
 	 */
 	private boolean exploreBoardGameState()  
 	{
-		GameHelper.Trace(false, "explored.containsKey(current.hashCode): " + explored.containsKey(current.hashCode));
+		//GameHelper.Trace(false, "explored.containsKey(current.hashCode): " + explored.containsKey(current.hashCode));
 		if (explored.containsKey(current.hashCode)) {
 			// Get the current subgoal and search using backtracking in explored
-			GameHelper.Trace(false, "isOnSubGoalPath())" + isOnSubGoalPath());
+			//GameHelper.Trace(false, "isOnSubGoalPath())" + isOnSubGoalPath());
 			if ((next = isOnSubGoalPath()) != null){
 				return true;
 			} else {
@@ -124,21 +77,21 @@ public class GameHeuristics {
 	{
 		// Get the head of the queue
 		// Check if the depth is ok, keep dequeueing or what
-		
+
 		GameState gamestate = frontier.poll();
-		 
-		GameHelper.Trace(false, 
-				"\nExplored so far recursive: " + explored.size()+ 
-				"\nFrontier size recursive:" + frontier.size()+
-				"\nSubgoals: " + subgoals.set.size());
-		
+
+		//GameHelper.Trace(false, 
+		//				"\nExplored so far recursive: " + explored.size()+ 
+		//				"\nFrontier size recursive:" + frontier.size()+
+		//				"\nSubgoals: " + subgoals.set.size());
+
 		// There is a limit on the size of the frontier
 		if (gamestate != null && (frontier.size() + explored.size()) < Math.pow(7, 6))
-		{   
+		{
 			// Add state to explored
 			explored.put(gamestate.hashCode, gamestate);
 
-			GameHelper.Trace(false, "Put gamestate in explored");
+			//GameHelper.Trace(false, "Put gamestate in explored");
 			// We alternate the turn 
 			player = (player == playerID) ? getOpponentPlayerID() : playerID;
 			for (int col = 0; col < cols; col++)
@@ -151,23 +104,24 @@ public class GameHeuristics {
 						GameState newGS  = gamestate.createGamestate(col, player);
 						// Add as child and add to the gamestate
 						gamestate.addToChildren(newGS);
-						boolean notContained = !(frontier.containsKey(newGS.hashCode) || explored.containsKey(newGS.hashCode));
-						
+						boolean notContained = !(frontier.containsKey(newGS.hashCode));
+
 						// Don't add already added states and cutoff if the gamestate exceeds our cutoff
 						// 6 - 1 = 5
-						GameHelper.Trace(false, "Depth: cur " + current.depth + "poten; "  + newGS.depth);
-						
+						//GameHelper.Trace(false, "Depth: cur " + current.depth + "poten; "  + newGS.depth);
+
 						if (notContained && (newGS.depth - current.depth) < cutOff) {
-							
 							addGameStateToFrontier(newGS);
 							// Assign utility
-							GameHelper.Trace(true, "Before assignutility" + newGS.toString());
-							if (assignUtility(newGS)) {
-								
-								// Add to subgoals if the state.turn == opponent.  
-								if (player == getOpponentPlayerID()) addGameStateToSubgoals(newGS);
-							}
-							GameHelper.Trace(true, "After assignutility" +newGS.toString());
+							//							if (assignUtility(newGS)) {	
+							//								// Add to subgoals if the state.turn == opponent.  
+							//								if (player == getOpponentPlayerID()) addGameStateToSubgoals(newGS);
+							//							}
+							assignUtility(newGS); 	
+							// Add to subgoals if the state.turn == opponent.  
+							if (player == getOpponentPlayerID()) addGameStateToSubgoals(newGS);
+
+							//GameHelper.Trace(true, "After assignutility" +newGS.toString());
 							/* put gamestate on frontier
 
 							 Prune criterias
@@ -176,67 +130,45 @@ public class GameHeuristics {
 							 	2.a All patterns have the same utility UTILITYMAX
 							 	2.b Depth is used as a factor, (+(1/delta_depth)   
 							 */  
-						}
+						} 
 						break;
 					}					
 				}
 			}
-			if (subgoals.set.size() >subgoalCutoff ) decideMove();
+			if (subgoals.set.size() > subgoalCutoff ) decideMove();
 			// call exploregamestate again, going depth first;
 			exploreBoardGameState(player);
 		} else {
-			GameHelper.Trace(false, "Frontier limit reached: " + subgoals.getSubGoal());
-			
-			GameHelper.Trace(false, "Top Subgoal: " + subgoals.getSubGoal());
-			GameHelper.Trace(false, "Subgoals: " + subgoals.set.toString());
+			//GameHelper.Trace(false, "Frontier limit reached: " + subgoals.getSubGoal());
+
+			//GameHelper.Trace(false, "Top Subgoal: " + subgoals.getSubGoal());
+			//GameHelper.Trace(false, "Subgoals: " + subgoals.set.toString());
 
 			// Of the explored states get the one with the best minmax, then search backwards to child of current
-			
 			decideMove();
-			
+
 		}
-	}
-	
-	private void decideMove() {
-		next = getNextByParent(subgoals.getSubGoal());
 	}
 
-	private boolean MINMAX(GameState gs) {
-		// The gamestate is a draw
-		//if (gs.utilityMin.equals(gs.utilityMax)) return true;
-		if (type.equals(GAMETYPE.MIN)) {
-			// Player = min
-			if (playerID == gs.turn)
-				// Next move = opponents. If move has utilitymax > 0 return false 
-				return !(gs.utilityMax > 0);
-			else 
-				// Next move = player. If move has utilitymin < 0 return true
-				return gs.utilityMin < 0;
-		} else {
-			// Player = Max 
-			if (playerID == gs.turn)
-				// Next move = opponents. If move has utilitymin < 0 return false
-				return !(gs.utilityMin < 0);
-			// current move = min, next move = max. If move has utilityMax > 0 return true
-			else 
-				return gs.utilityMax > 0;
-		}
+	private void decideMove() {
+		next = getNextByParent(subgoals.getSubGoal());
 	}
 
 	private GameState getNextByParent(GameState subgoal) {
 		GameState gBack = subgoal;
 		// Get the optimal child of the current node 
-		
-		while(gBack.parent != null && gBack.depth > current.depth) {
-			// We hit the child of the current node 
-			if (gBack.parent.equals(current.hashCode)) {
-				GameHelper.Trace(true, "Found the child of the current node for our subgoal");
-				break;		
-			} else { 
-				gBack = explored.get(gBack.parent);
+		if (gBack != null) {
+			while(gBack.parent != null && gBack.depth > current.depth) {
+				// We hit the child of the current node 
+				if (gBack.parent.equals(current.hashCode)) {
+					GameHelper.Trace(true, "Found the child of the current node for our subgoal");
+					break;		
+				} else { 
+					gBack = explored.get(gBack.parent);
+				}
 			}
-		}
-		GameHelper.Trace(false, "Next By parent: ");
+		} 
+		//GameHelper.Trace(false, "Next By parent: ");
 		return gBack;
 	}
 	/***
@@ -245,27 +177,9 @@ public class GameHeuristics {
 	 * @param state
 	 */
 	private boolean assignUtility(GameState state) 
-	{
-		//TODO: ASSIGN 0-0 = 0, MATCH(^ownturn) = MID 
-		
+	{ 
 		// Get state as string
 		String strState = state.stateAsString();
-		/***
-		 * First check opponent 
-		 */
-
-		//		RegexResult resultOpponent  = threeInARow.match(strState, getOpponentPlayerID());
-		//		RegexResult resultPlayer = threeInARow.match(strState, getPlayerID());
-		//		if (!assignUtility(resultOpponent, resultPlayer, state)) {
-		//			//check for killer move
-		//			resultOpponent = killermoves.match(strState, getOpponentPlayerID());
-		//			resultPlayer = killermoves.match(strState, getPlayerID());
-		//		} if (!assignUtility(resultOpponent, resultPlayer, state))  {
-		//			// Checks for basicmoves
-		//			resultOpponent = basicMoves.match(strState, getOpponentPlayerID());
-		//			resultPlayer = basicMoves.match(strState, getPlayerID());
-		//			assignUtility(resultOpponent, resultPlayer, state);
-		//		}
 
 		RegexResult result  = threeInARow.match(strState, getOpponentPlayerID());
 		if (!assignUtility(result, state)) {
@@ -299,7 +213,6 @@ public class GameHeuristics {
 			}
 		} else {
 			// Opponent has nothing
-// TODO:
 			if (state.turn == getOpponentPlayerID()) {
 				// Next turn = player
 				result = threeInARow.match(strState, getPlayerID());
@@ -334,9 +247,9 @@ public class GameHeuristics {
 
 			} else {
 				if (type.equals(GAMETYPE.MIN)) {
-					state.utilityMax = UTILITY_MIN + deltaDepth;
+					state.utilityMax = UTILITY_MAX + deltaDepth;
 				} else {
-					state.utilityMin = UTILITY_MAX - deltaDepth;
+					state.utilityMin = UTILITY_MIN - deltaDepth;
 				}
 			}
 			status =  true;
@@ -345,54 +258,6 @@ public class GameHeuristics {
 		return status;
 	}
 
-	private boolean assignUtility(RegexResult opponent, RegexResult player, GameState state) {
-		int deltaDepth = state.depth  - current.depth;
-		if (opponent != null) {
-			// Opponent has something!!  
-			if (state.turn == getPlayerID()) {
-				// It's the players move
-				if (type.equals(GAMETYPE.MIN)) {
-					// Player is min. The opponent utility = UTILITYMAX
-					state.utilityMax = UTILITY_MAX - deltaDepth;
-				} else {
-					// Player is max. The opponent utility = UTILITYMIN
-					state.utilityMin = UTILITY_MIN + deltaDepth;
-				}
-				return true;
-			}else {
-				// It's opponents move
-				if (player!= null) {
-					// Player has something 
-					if (type.equals(GAMETYPE.MIN)) {
-						// Player is MIN. The players utility = UTILITYMIN
-						state.utilityMin = UTILITY_MIN + deltaDepth;
-					} else {
-						// Player is max. The players utility = UTILITYMAX
-						state.utilityMax = UTILITY_MAX - deltaDepth;
-					} 
-					return true;
-				} 
-			}
-
-		} else {
-			// Opponent has nothing. Is this an optimal state for us
-			if (player!= null) {
-				// The player has somthing 
-				if (state.turn == getOpponentPlayerID()) {
-					// It's the opponents turn 
-					if (type.equals(GAMETYPE.MIN)) {
-						// Player is min. The opponent utility = UTILITYMAX
-						state.utilityMin = UTILITY_MIN + deltaDepth;
-					} else {
-						// Player is max. The opponent utility = UTILITYMIN
-						state.utilityMax = UTILITY_MAX - deltaDepth;
-					}
-					return true;
-				} 
-			} 
-		}
-		return false;
-	}
 
 	/***
 	 * 
@@ -402,20 +267,20 @@ public class GameHeuristics {
 
 	public int evaluateGameState()
 	{
-		Stopwatch w = null;
-		GameHelper.Trace(false, "Evaluating gamestate");
+		
+		//GameHelper.Trace(false, "Evaluating gamestate");
 		// Clear all objects from the frontier; 
 		frontier.clear();
 		// clean up subgoals
-		subgoals.cleanup(false);
-		GameHelper.Trace(false, "Subgoals size after cleanup: " + subgoals.set.size());
+		subgoals.cleanup(true);
+		//GameHelper.Trace(false, "Subgoals size after cleanup: " + subgoals.set.size());
 
-		// trim away irrelevant gamestates  
+		//trim away irrelevant gamestates  
 		if (current.parent != null && explored.containsKey(current.parent)) {
-			GameHelper.Trace(false, "Trimming explored, before: " + explored.size());
+			//GameHelper.Trace(false, "Trimming explored, before: " + explored.size());
 			exploredCleanupList.add(explored.get(current.parent));
 			trimExplored();
-			GameHelper.Trace(false, "Trimming explored, after: " + explored.size());
+			//GameHelper.Trace(false, "Trimming explored, after: " + explored.size());
 		}
 
 		// Get state as string
@@ -432,7 +297,8 @@ public class GameHeuristics {
 			nextMove = getMove(result);
 		}  else if ((result = threeInARow.match(strState, getOpponentPlayerID()))!=null){
 			nextMove = getMove(result);
-		} else if ((result = basicMoves.match(strState, playerID)) != null){
+		} 
+		else if ((result = basicMoves.match(strState, playerID)) != null){
 			nextMove = getMove(result);
 		} 
 		else if((result = basicMoves.match(strState, getOpponentPlayerID())) != null)
@@ -451,20 +317,20 @@ public class GameHeuristics {
 		 * 		Search the possible gamestates using current as base   
 		 */
 		addGameStateToFrontier(current);
-		w = new Stopwatch();
-		GameHelper.Trace(false,  "Searching for state among already explored states");
+
+		//GameHelper.Trace(false,  "Searching for state among already explored states");
 		boolean alreadyExplored = exploreBoardGameState();
-		GameHelper.Trace(false, "Time to decide [exploreBoardGameState()]: " +  w.elapsedTime());
 		if (alreadyExplored) {
 			return next.action;
 		} else {
+			GameHelper.Trace(false,  "exploreBoardGameState(playerID): ");
 			try {
 				exploreBoardGameState(playerID);
 			} catch (Exception e){ 
 				e.printStackTrace();
 				System.exit(-1);
 			}
-			GameHelper.Trace(false,  "Time to decide [exploreBoardGameState(playerID)]: " +  w.elapsedTime());
+			
 			return next.action;
 		}
 	}
@@ -499,8 +365,8 @@ public class GameHeuristics {
 		GameState g = current.createGamestate(move, player);
 		current = g;
 		subgoals.setCurrent(current);
-		GameHelper.Trace(false, "Player: " + player + " Move: " + move + " Depth: " + g.depth);
-		GameHelper.Trace(false, "Board \n" + current.stateAsStringMatrix());	
+		//GameHelper.Trace(false, "Player: " + player + " Move: " + move + " Depth: " + g.depth);
+		//GameHelper.Trace(false, "Board \n" + current.stateAsStringMatrix());	
 	}
 
 	/***
@@ -509,7 +375,7 @@ public class GameHeuristics {
 	 */
 	private void updateCurrentState(GameState state){
 		// Implicitly updates gamestate by asignning and evaluting at the same time
-		GameHelper.Trace(false,"Current state updated");
+		//GameHelper.Trace(false,"Current state updated");
 		current = state; 
 		subgoals.setCurrent(current);
 	}

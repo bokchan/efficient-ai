@@ -29,6 +29,7 @@ public class ShowGame
      */
     public static void main(String[] args)
     {
+    	System.out.println(System.getProperty("user.dir"));
         IGameLogic player1 = null;
         IGameLogic player2 = null;
         int cols = 7;

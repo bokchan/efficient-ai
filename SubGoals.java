@@ -33,7 +33,7 @@ public class SubGoals {
 				set.add(e);
 			}
 		} else {
-			if ((e.utilityMin != e.utilityMax)) set.add(e );
+			set.add(e);
 		}
 		if (set.size() > maxSize) remove();
 	}
@@ -45,9 +45,11 @@ public class SubGoals {
 	 */
 	public boolean compare(GameState e) {
 		if (type.equals(TYPE.MINGOALS)) {
-			return cMin.compare(e, set.last()) > 0;
+			// -1 == e is smaller than last 
+			return cMin.compare(e, set.last()) < 0;
 		}else {
-			return cMax.compare(e,set.first()) < 0;
+			// 1 e greater than first 
+			return cMax.compare(e,set.first()) > 0;
 		}
 	}
 
@@ -70,16 +72,14 @@ public class SubGoals {
 			for (GameState goal : set) {
 				if (type.equals(SubGoals.TYPE.MINGOALS)) goal.utilityMin -= 2;
 				else goal.utilityMax+=2;
-
 			}
-
 			tmp = null;
 		}
 	}
 
 	public GameState getSubGoal()  {
 		if (!set.isEmpty()) 
-			return set.last();
+			return type.equals(TYPE.MINGOALS) ? set.first() : set.last() ;
 		else 
 			return null;
 	}
