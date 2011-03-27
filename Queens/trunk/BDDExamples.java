@@ -1,5 +1,7 @@
-
-import net.sf.javabdd.*;
+import net.sf.javabdd.BDD;
+import net.sf.javabdd.BDDFactory;
+import net.sf.javabdd.BDDPairing;
+import net.sf.javabdd.JFactory;
 
 public class BDDExamples {
 
@@ -49,8 +51,6 @@ public class BDDExamples {
 		replacement.set(from,to);
 		
 		BDD b_replaced = existed.replace(replacement);
-		
-		
 	}
 
 }

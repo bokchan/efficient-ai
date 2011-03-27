@@ -3,7 +3,7 @@
  * @author Stavros Amanatidis
  *
  */
-import javax.swing.*;
+import javax.swing.JFrame;
 
 public class ShowBoard {
 	public static void main(String[] arg) {

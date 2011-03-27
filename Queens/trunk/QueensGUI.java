@@ -1,7 +1,11 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
+import javax.swing.JComponent;
 /**
  * This class creates the UI of the board and the mouse events listeners.
  * You do not have to change anything in this file. 

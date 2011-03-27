@@ -5,9 +5,6 @@
  * @author Stavros Amanatidis
  *
  */
-import java.util.*;
-
-import net.sf.javabdd.*;
 
 public class QueensLogic {
     private int x = 0;
