@@ -1,3 +1,4 @@
+package fourconnect;
 
 public class GameHelper {	
 	private static boolean trace = true;

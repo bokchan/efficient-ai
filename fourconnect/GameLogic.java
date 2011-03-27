@@ -1,3 +1,4 @@
+package fourconnect;
 
 public class GameLogic implements IGameLogic {
     private int x = 0;
