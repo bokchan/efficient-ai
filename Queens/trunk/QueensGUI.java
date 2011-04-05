@@ -16,6 +16,7 @@ import javax.swing.JComponent;
 public class QueensGUI extends JComponent implements MouseListener
 {
 	final static long serialVersionUID = 1234567890;
+	private int imgSize = 80;
 	private int 		chosenColumn;	// The value of the last column chosen by the user.
     private int         chosenRow;   // The value of the last row chosen by the user.
 	private QueensLogic 	logic;			
@@ -63,10 +64,10 @@ public class QueensGUI extends JComponent implements MouseListener
 		
         //draw borders
         for (int i = 0;i<cols;i++) {
-            g.drawImage(border_left, 0, 100+100*i, this);
-            g.drawImage(border_right, 100 + gameboard.length *100, 100+100*i, this); 
-            g.drawImage(border_top, 100+100*i, 0, this);
-            g.drawImage(border_bottom, 100+100*i, 100+gameboard.length*100, this);
+            g.drawImage(border_left, 0, imgSize+imgSize*i, this);
+            g.drawImage(border_right, imgSize + gameboard.length *imgSize, imgSize+imgSize*i, this); 
+            g.drawImage(border_top, imgSize+imgSize*i, 0, this);
+            g.drawImage(border_bottom, imgSize+imgSize*i, imgSize+gameboard.length*imgSize, this);
         }
 
         //draw board
@@ -74,25 +75,24 @@ public class QueensGUI extends JComponent implements MouseListener
 			for (int r = 0; r < rows; r++){
 				int player = gameboard[c][r];
                 
-                if ((c+r)%2==0) g.drawImage(backgroundW, 100+100*c, 100+100*r, this);
-                else g.drawImage(backgroundB, 100+100*c, 100+100*r, this);
+                if ((c+r)%2==0) g.drawImage(backgroundW, imgSize+imgSize*c, imgSize+imgSize*r, this);
+                else g.drawImage(backgroundB, imgSize+imgSize*c, imgSize+imgSize*r, this);
                 
                 if (player == 1) // red = computer
-					g.drawImage(queen, 100+100*c, 100+100*r, this);
+					g.drawImage(queen, imgSize+imgSize*c, imgSize+imgSize*r, this);
 				if (player == -1)//invalid
-					g.drawImage(invalid, 100+100*c, 100+100*r, this);
+					g.drawImage(invalid, imgSize+imgSize*c, imgSize+imgSize*r, this);
 				
-                g.drawImage(part, 100+100*c, 100+100*r, this);
+                g.drawImage(part, imgSize+imgSize*c, imgSize+imgSize*r, this);
 				
 			}
 		}
     
 		//draw corners
 		g.drawImage(corner_left_top, 0, 0, this);
-		g.drawImage(corner_left_bottom, 0, 100+rows*100, this);
-		g.drawImage(corner_right_top, 100+100*cols, 0, this);
-		g.drawImage(corner_right_bottom, 100+100*cols, 100+rows*100, this);
-		
+		g.drawImage(corner_left_bottom, 0, imgSize+rows*imgSize, this);
+		g.drawImage(corner_right_top, imgSize+imgSize*cols, 0, this);
+		g.drawImage(corner_right_bottom, imgSize+imgSize*cols, imgSize+rows*imgSize, this);
  	}
 
 	/*
@@ -100,8 +100,8 @@ public class QueensGUI extends JComponent implements MouseListener
 	 * column and row is kept and parsed to the logic. 
 	 */
 	public void mouseClicked(MouseEvent e){
-        chosenColumn = e.getX()/100 - 1;
-        chosenRow = e.getY()/100 - 1;
+        chosenColumn = e.getX()/imgSize - 1;
+        chosenRow = e.getY()/imgSize - 1;
         
         //this method connects the UI with the logic
         int size = logic.getGameBoard().length;
@@ -119,6 +119,5 @@ public class QueensGUI extends JComponent implements MouseListener
 	public void mouseExited(MouseEvent e){}
 	public void mousePressed(MouseEvent e){}
 	public void mouseReleased(MouseEvent e){}
-
 }
 
