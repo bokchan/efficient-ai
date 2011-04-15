@@ -75,7 +75,9 @@ public class RegexEvaluation {
 				// Now we got a regex expressions
 				Node n = expressions.item(i);
 			
-				patterns.add(new RegexExpression(xpath.evaluate("pattern", n),
+				patterns.add(new RegexExpression(
+						xpath.evaluate("description", n),
+						xpath.evaluate("pattern", n),
 						Integer.valueOf(xpath.evaluate("offsetY", n)),
 						Integer.valueOf(xpath.evaluate("offsetX", n)),
 						Integer.valueOf(xpath.evaluate("modMin", n)),
