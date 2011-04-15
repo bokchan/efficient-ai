@@ -4,6 +4,7 @@ import java.util.regex.Pattern;
 
 public class RegexExpression{
 	private String description;
+	private String pattern;
 	private Pattern patternPlayer1;
 	private Pattern patternPlayer2;
 	private int offsetX = 0;
@@ -20,7 +21,9 @@ public class RegexExpression{
 	 */
 	private int modMax = -1;
 	
-	public RegexExpression(String p, int offsetY,int offsetX, int modMin, int modMax) {
+	public RegexExpression(String d, String p, int offsetY,int offsetX, int modMin, int modMax) {
+		this.description = d;
+		this.pattern = p;
 		this.patternPlayer1 = Pattern.compile(p.replace("VAR", "1"));
 		this.patternPlayer2 = Pattern.compile(p.replace("VAR", "2"));
 		this.offsetX = offsetX;
@@ -49,4 +52,13 @@ public class RegexExpression{
 	public int getModMax() {
 		return modMax;
 	}
+	
+	public String getDescription() {
+		return description;
+	}
+	
+	public String getPattern() {
+		return this.pattern;   
+	}
+	
 }
