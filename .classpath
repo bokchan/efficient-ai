@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="src" path="trunk"/>
-	<classpathentry kind="src" path="branches"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JUNIT"/>
-	<classpathentry kind="lib" path="trunk/nqueens/javabdd-1.0b2.jar"/>
-	<classpathentry kind="output" path="bin"/>
-</classpath>
