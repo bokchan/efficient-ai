@@ -28,10 +28,6 @@ public class BDDRestrictor {
 					
 					// Make a restriction for this variable and apply it to the restricted BDD
 					BDD Restriction = fact.ithVar(varNum);
-					BDDHelper.TRACE(varNum);
-					BDDHelper.printBoard(board);
-					BDDHelper.printBDDFactory(fact);
-					//nQueensBDDRestricted = nQueensBDDRestricted.restrict(Restriction);
 					nQueensBDDRestricted.restrictWith(Restriction);
 				}
 			}

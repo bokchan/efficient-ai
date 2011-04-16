@@ -35,7 +35,6 @@ public class BDDBuilder {
 		return queen;
 	}
 
-
 	private static void build(int i, int j, BDDFactory fact) {
 		// a = row, b = col, c = dia, d = dia, e = 1qperrow 
 		BDD a = fact.one(), b = fact.one(), c = fact.one(), d = fact.one(), e = fact.one();
@@ -80,12 +79,9 @@ public class BDDBuilder {
 			}
 		}
 
-
 		/*  One queen in each row */
 		BDD u = fact.zero();
 		for (l = 0; l< size; l++) {
-			//u= u.xor(X[i][l]);
-			//u.orWith(X[k][l].id());
 			u = u.apply(X[i][l], BDDFactory.xor);
 		}  
 		// Only one queen per row
@@ -96,6 +92,5 @@ public class BDDBuilder {
 		a.andWith(b);
 		BDDBuilder.queen.andWith(a);
 		BDDBuilder.queen.andWith(e);
-
 	}
 }

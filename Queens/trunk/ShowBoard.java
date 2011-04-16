@@ -6,10 +6,18 @@
 import javax.swing.JFrame;
 
 public class ShowBoard {
-	public static void main(String[] arg) {
+	public static void main(String[] arg)
+	{
 		QueensLogic l = new QueensLogic();
-		
 		int size = 8;
+		if (arg.length == 1) 
+		{
+			try {
+				size = Integer.valueOf(arg[0]);
+			}catch (Exception e) { // Do nothing }
+			}
+		}
+
 		l.initializeGame(size);
 
 		QueensGUI g = new QueensGUI(l);

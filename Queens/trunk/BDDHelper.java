@@ -25,10 +25,8 @@ public class BDDHelper {
 	 */
 	public static int[] getValidDomains(BDD bdd, BDDFactory fact, int size) {
 		
-		if (QueensLogic.TRACE) {
-			BDDHelper.TRACE("getValidDomains");
-			
-		}
+		if (QueensLogic.TRACE) BDDHelper.TRACE("getValidDomains");			
+
 		int vars = size*size;
 		int validDomains[] = new int[vars]; 
 
@@ -47,14 +45,26 @@ public class BDDHelper {
 		return validDomains;
 	}
 
+	/***
+	 * Trace messages 
+	 * @param msg
+	 */
 	public static void TRACE(Object msg) {
 		TRACE(String.valueOf(msg));
 	}
 
+	/***
+	 * Trace messages 
+	 * @param msg
+	 */
 	public static void TRACE(String msg) {
 		System.out.println("TRACE: " + msg);
 	}
 
+	/***
+	 * Print the board matrix to the console  
+	 * @param board
+	 */
 	public static void printBoard(int[][] board) {
 		for (int i = 0; i < board.length; i++) {
 			String row = "";
@@ -65,6 +75,11 @@ public class BDDHelper {
 		}
 	}
 	
+	/***
+	 * Print the array of validdomains 
+	 * @param domains
+	 * @param size
+	 */
 	public static void printValidDomains(int[] domains, int size) {
 		for (int i = 0; i< domains.length; i++) {
 			if (i > 0 && i % size == 0)  
@@ -74,8 +89,11 @@ public class BDDHelper {
 		System.out.println();
 	}
 
+	/***
+	 * Print the value of the all a variables in a factory
+	 * @param factory
+	 */
 	public static void printBDDFactory(BDDFactory factory) {
-		String  row ="";
 		for (int i = 0; i < factory.varNum(); i++) { 
 			System.out.print(factory.ithVar(i).var() + ",");
 		} 
