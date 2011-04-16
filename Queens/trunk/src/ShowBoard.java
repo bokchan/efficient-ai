@@ -10,7 +10,7 @@ public class ShowBoard {
 	public static void main(String[] arg) {
 		QueensLogic l = new QueensLogic();
 		
-		int size = 8;
+		int size = 10;
 		if (arg.length > 0)
 			size = Integer.parseInt(arg[0]);
 		
