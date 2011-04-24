@@ -7,48 +7,101 @@ public class SudokuSolver implements ISudokuSolver {
 	int size;
 	ArrayList<ArrayList<Integer>> D; //= new ArrayList<ArrayList<Integer>>();
 	
+	
+	//this method returns the current puzzle
 	public int[][] getPuzzle() {
 		return puzzle;
 	}
-
+	//inserts a value in the puzzle, should include a check if value is legal, from 0 to 9
 	public void setValue(int col, int row, int value) {
 		puzzle[col][row] = value;
 	}
 
+	//initialize empty puzzle of given size
 	public void setup(int size1) {
 		size = size1;
 		puzzle = new int[size*size][size*size];
 		D = new ArrayList<ArrayList<Integer>>(size*size*size*size);
 		
 		//Initialize each D[X]...
+		// for all indexes in D (we call them X) we need to initialize a domain Dx with 9 spaces
+		for(int X = 0; X< D.size(); X++){
+			ArrayList<Integer> Dx = new ArrayList<Integer>(9);
+			
+			//insert integers from 1 to 9 in domain Dx
+			for (int i = 1; i< 10;i++){
+				Dx.add(i);
+			}
+			//finally add the new domain to the total list D
+			D.add(Dx);
+		}	
 		
 	}
-
-
-	public boolean solve() {
-		ArrayList<Integer> asn = GetAssignment(puzzle);
-		
-		//INITIAL_FC
-		//FC
-
-		return true;
-	}
-
+	
+	//read in predefined puzzle, should include check if array is square with legal values
 	public void readInPuzzle(int[][] p) {
 		puzzle = p;
 	}
 	
+
+	@SuppressWarnings("rawtypes")
+	public boolean solve() {
+		ArrayList<Integer> asn = GetAssignment(puzzle);
 	
+		
+		//Initial_FC
+		if (INITIAL_FC(asn)==false) 
+			return false;
+		//FC
+		ArrayList result = FC(asn);
+			if (result !=null)
+			    {
+				puzzle = GetPuzzle(result);
+				return true;}
+			else
+				return false;
+
+	}
+
+		//---------------------------------------------------------------------------------YOUR TASK:  Implement FC(asn)
+
 		//---------------------------------------------------------------------------------
-		//YOUR TASK:  Implement FC(asn)
-		//---------------------------------------------------------------------------------
+		@SuppressWarnings("rawtypes")
 		public ArrayList FC(ArrayList<Integer> asn) {
-	
+			
+			//if all squares have an assigned value, there is no more to do
+			if (!asn.contains(0))
+			{return asn;}
+			
+			//look at the first not assigned square
+			int X = asn.indexOf(0);
+			
+			//save copy of original Domain for rollback purposes
+			ArrayList<ArrayList<Integer>> Dold = D;
+			
+			for (int V : D.get(X)){
+				
+				//call AC_FC and tjek if the value would yield a consistent result
+				if (AC_FC(X,V)){
+					//if yes, set the value!
+					asn.set(X, V);
+					// call FC again (recursively) and start over with the next unassigned square
+					ArrayList R = FC(asn);
+						if (R != null)
+							//If we succeeded for all squares, return the solution!
+						{return R;}
+					// if at some point the AC_FC check did not yield a consistent result, reset the value to 0
+					asn.set(X,0);
+					//and reset the domain to the saved copy
+					D = Dold;
+				}
+				else{
+					D = Dold;
+				}
+			}
+				
 			return null;//failure
 		}
-
-	
-
 		
 		//---------------------------------------------------------------------------------
 		// CODE SUPPORT FOR IMPLEMENTING FC(asn)
@@ -336,6 +389,7 @@ public class SudokuSolver implements ISudokuSolver {
 		}	
 		
 	
+		@SuppressWarnings("rawtypes")
 		public int[][] GetPuzzle(ArrayList asn) {
 			int[][] p = new int[size*size][size*size];
 			for (int i=0; i<size*size; i++) {
