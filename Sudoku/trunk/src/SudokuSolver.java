@@ -35,7 +35,7 @@ public class SudokuSolver implements ISudokuSolver {
 			//finally add the new domain to the total list D
 			D.add(Dx);
 		}	
-		
+	
 	}
 	
 	//read in predefined puzzle, should include check if array is square with legal values
@@ -48,7 +48,6 @@ public class SudokuSolver implements ISudokuSolver {
 	public boolean solve() {
 		ArrayList<Integer> asn = GetAssignment(puzzle);
 	
-		
 		//Initial_FC
 		if (INITIAL_FC(asn)==false) 
 			return false;
@@ -79,9 +78,11 @@ public class SudokuSolver implements ISudokuSolver {
 			//save copy of original Domain for rollback purposes
 			ArrayList<ArrayList<Integer>> Dold = D;
 			
-			for (int V : D.get(X)){
+			//for all values in domain Dx
+			ArrayList<Integer> Dx = D.get(X);
+			for (int V : Dx){
 				
-				//call AC_FC and tjek if the value would yield a consistent result
+				//call AC_FC and check if the value would yield a consistent result
 				if (AC_FC(X,V)){
 					//if yes, set the value!
 					asn.set(X, V);
