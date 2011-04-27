@@ -25,7 +25,7 @@ public class SudokuSolver implements ISudokuSolver {
 		
 		//Initialize each D[X]...
 		// for all indexes in D (we call them X) we need to initialize a domain Dx with 9 spaces
-		for(int X = 0; X< D.size(); X++){
+		for(int X = 0; X< size*size*size*size; X++){
 			ArrayList<Integer> Dx = new ArrayList<Integer>(9);
 			
 			//insert integers from 1 to 9 in domain Dx
@@ -79,7 +79,7 @@ public class SudokuSolver implements ISudokuSolver {
 			ArrayList<ArrayList<Integer>> Dold = D;
 			
 			//for all values in domain Dx
-			ArrayList<Integer> Dx = D.get(X);
+				ArrayList<Integer> Dx = D.get(X);
 			for (int V : Dx){
 				
 				//call AC_FC and check if the value would yield a consistent result

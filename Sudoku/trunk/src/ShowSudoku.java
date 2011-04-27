@@ -18,18 +18,18 @@ public class ShowSudoku {
 		puz[6][6]= 6;
 		puz[7][7]= 4;
 		puz[7][8]= 2;
-	//**/
+	**/
 		
 		//s.readInPuzzle(puz);
 		//System.out.println(s.getPuzzle());
 		
-		//s.setValue(4,1,9);
-		s.setValue(1,1,4);
-		s.setValue(7,8,2);
+		s.setValue(4,1,9);
+		//s.setValue(1,1,4);
+		//s.setValue(7,8,2);
 		//s.setValue(7,7,4);
-		s.solve();
+		//s.solve();
 		
-	/**	SudokuGUI g = new SudokuGUI(s);
+		SudokuGUI g = new SudokuGUI(s);
 
 		// Setup of the frame containing the puzzle
 		JFrame f = new JFrame();
@@ -38,7 +38,7 @@ public class ShowSudoku {
 		f.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
 		f.getContentPane().add(g);    
 		f.setVisible(true);
-		**/
+		
 		
 	}
 }
