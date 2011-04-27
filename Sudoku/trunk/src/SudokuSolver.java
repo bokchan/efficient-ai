@@ -97,10 +97,10 @@ public class SudokuSolver implements ISudokuSolver {
 					// if at some point the AC_FC check did not yield a consistent result, reset the value to 0
 					asn.set(X,0);
 					//and reset the domain to the saved copy
-					D = Dold;
+					D = (ArrayList<ArrayList<Integer>>) Dold.clone();
 				}
 				else{
-					D = Dold;
+					D = (ArrayList<ArrayList<Integer>>) Dold.clone();
 				}
 			}
 				
