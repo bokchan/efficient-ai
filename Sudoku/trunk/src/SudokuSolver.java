@@ -76,7 +76,10 @@ public class SudokuSolver implements ISudokuSolver {
 			int X = asn.indexOf(0);
 			
 			//save copy of original Domain for rollback purposes
-			ArrayList<ArrayList<Integer>> Dold = D;
+			ArrayList<ArrayList<Integer>> Dold = new ArrayList<ArrayList<Integer>>();
+			for (ArrayList<Integer> d : D ) 
+				Dold.add(d);
+			
 			
 			//for all values in domain Dx
 				ArrayList<Integer> Dx = D.get(X);
