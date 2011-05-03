@@ -1,8 +1,7 @@
 import javax.swing.JFrame;
 
 public class ShowSudoku {
-	public static void main(String[] arg){
-		
+	public static void main(String[] arg){		
 		ISudokuSolver s = new SudokuSolver();
 		s.setup(3);
 		
@@ -54,9 +53,5 @@ public class ShowSudoku {
 		
 		return puz;
 	}
-	
-	private static void printHelp() {
-		
-	} 
 }
 

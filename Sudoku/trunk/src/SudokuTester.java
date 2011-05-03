@@ -1,4 +1,5 @@
 import javax.swing.JFrame;
+ 
 
 
 public class SudokuTester {
@@ -80,5 +81,6 @@ public class SudokuTester {
 	public static int GetColumn(int X){
 		return X - ((X / (size*size))*size*size);	
 	}
-
+	
+	
 }
