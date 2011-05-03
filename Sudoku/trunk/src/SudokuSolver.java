@@ -47,10 +47,10 @@ public class SudokuSolver implements ISudokuSolver {
 	@SuppressWarnings("rawtypes")
 	public boolean solve() {
 		ArrayList<Integer> asn = GetAssignment(puzzle);
-	
+		
 		//Initial_FC
-		if (INITIAL_FC(asn)==false) 
-			return false;
+		if (INITIAL_FC(asn)==false) {
+			return false;}
 		//FC
 		ArrayList result = FC(asn);
 			if (result !=null)
@@ -58,49 +58,77 @@ public class SudokuSolver implements ISudokuSolver {
 				puzzle = GetPuzzle(result);
 				return true;}
 			else
-				return false;
+				{
+				return false;}
 
 	}
 
 		//---------------------------------------------------------------------------------YOUR TASK:  Implement FC(asn)
 
 		//---------------------------------------------------------------------------------
+	
+	
+	// a method that allows us to make a copy of our global variable D (a list of domains)
+	private ArrayList<ArrayList<Integer>> CloneDomains(ArrayList<ArrayList<Integer>> domains) {
+		 ArrayList<ArrayList<Integer>> domainsCopy = new ArrayList<ArrayList<Integer>>(domains.size());
+		 for (ArrayList<Integer> domain : domains) {
+		  domainsCopy.add(new ArrayList<Integer>(domain));
+		 }
+		 return domainsCopy;
+	}
+	
+	//a method that allows us to make a copy of a single Domain (Dx)
+	private ArrayList<Integer> CloneDomain(ArrayList<Integer> domain) {
+		 ArrayList<Integer> domainCopy = new ArrayList<Integer>(domain.size());
+		 for (Integer V : domain) {
+		  domainCopy.add((V));
+		 }
+		 return domainCopy;
+	}
+	
+	
 		@SuppressWarnings("rawtypes")
 		public ArrayList FC(ArrayList<Integer> asn) {
 			
 			//if all squares have an assigned value, there is no more to do
-			if (!asn.contains(0))
-			{return asn;}
+			if (!asn.contains(0)){
+				return asn;}
 			
 			//look at the first not assigned square
 			int X = asn.indexOf(0);
 			
 			//save copy of original Domain for rollback purposes
-			ArrayList<ArrayList<Integer>> Dold = new ArrayList<ArrayList<Integer>>();
-			for (ArrayList<Integer> d : D ) 
-				Dold.add(d);
+			ArrayList<ArrayList<Integer>> Dold = CloneDomains(D);
 			
+			//for all values in the cloned domain Dx (cloned so we dont overwrite the original in case we have to rollback) 
 			
-			//for all values in domain Dx
-				ArrayList<Integer> Dx = D.get(X);
-			for (int V : Dx){
+			for (int V : CloneDomain(D.get(X))){
 				
 				//call AC_FC and check if the value would yield a consistent result
 				if (AC_FC(X,V)){
 					//if yes, set the value!
 					asn.set(X, V);
+					
 					// call FC again (recursively) and start over with the next unassigned square
+					
 					ArrayList R = FC(asn);
 						if (R != null)
 							//If we succeeded for all squares, return the solution!
 						{return R;}
 					// if at some point the AC_FC check did not yield a consistent result, reset the value to 0
+						
 					asn.set(X,0);
+					
 					//and reset the domain to the saved copy
-					D = (ArrayList<ArrayList<Integer>>) Dold.clone();
+					
+					D = CloneDomains(Dold);
+					
 				}
 				else{
-					D = (ArrayList<ArrayList<Integer>>) Dold.clone();
+					
+					D = CloneDomains(Dold);
+					//System.out.println("Domain was reset to Dold (in else)");
+					
 				}
 			}
 				
