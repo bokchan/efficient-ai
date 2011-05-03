@@ -14,6 +14,7 @@ public class SudokuSolver implements ISudokuSolver {
 	}
 	//inserts a value in the puzzle, should include a check if value is legal, from 0 to 9
 	public void setValue(int col, int row, int value) {
+		if (value < 0 || value > size*size) throw new IllegalArgumentException("value must be between 0 and 9");
 		puzzle[col][row] = value;
 	}
 
@@ -29,7 +30,7 @@ public class SudokuSolver implements ISudokuSolver {
 			ArrayList<Integer> Dx = new ArrayList<Integer>(9);
 			
 			//insert integers from 1 to 9 in domain Dx
-			for (int i = 1; i< (size*size + 1.);i++){
+			for (int i = 1; i<= (size*size);i++){
 				Dx.add(i);
 			}
 			//finally add the new domain to the total list D
@@ -60,7 +61,6 @@ public class SudokuSolver implements ISudokuSolver {
 			else
 				{
 				return false;}
-
 	}
 
 		//---------------------------------------------------------------------------------YOUR TASK:  Implement FC(asn)
@@ -101,14 +101,11 @@ public class SudokuSolver implements ISudokuSolver {
 			ArrayList<ArrayList<Integer>> Dold = CloneDomains(D);
 			
 			//for all values in the cloned domain Dx (cloned so we dont overwrite the original in case we have to rollback) 
-			
 			for (int V : CloneDomain(D.get(X))){
-				
 				//call AC_FC and check if the value would yield a consistent result
 				if (AC_FC(X,V)){
 					//if yes, set the value!
 					asn.set(X, V);
-					
 					// call FC again (recursively) and start over with the next unassigned square
 					
 					ArrayList R = FC(asn);
