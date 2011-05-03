@@ -29,7 +29,7 @@ public class SudokuSolver implements ISudokuSolver {
 			ArrayList<Integer> Dx = new ArrayList<Integer>(9);
 			
 			//insert integers from 1 to 9 in domain Dx
-			for (int i = 1; i< 10;i++){
+			for (int i = 1; i< (size*size + 1.);i++){
 				Dx.add(i);
 			}
 			//finally add the new domain to the total list D
