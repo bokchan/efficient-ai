@@ -127,8 +127,6 @@ public class SudokuSolver implements ISudokuSolver {
 				else{
 					
 					D = CloneDomains(Dold);
-					//System.out.println("Domain was reset to Dold (in else)");
-					
 				}
 			}
 				
